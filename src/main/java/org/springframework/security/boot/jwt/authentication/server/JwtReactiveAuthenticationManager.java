@@ -39,8 +39,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsChecker;
 import org.springframework.util.Assert;
 
-import io.github.hiwepy.jwt.JwtClaims;
-import io.github.hiwepy.jwt.JwtPayload;
+import io.github.easy4j.jwt.JwtClaims;
+import io.github.easy4j.jwt.JwtPayload;
 
 import reactor.core.publisher.Mono;
 
