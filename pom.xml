@@ -12,7 +12,7 @@
     <groupId>io.github.easy4j</groupId>
     <artifactId>security-jwt-spring-boot-starter</artifactId>
     <description>Spring Boot Starter For Spring Security With JWT</description>
-    <version>3.1.x.20260527-SNAPSHOT</version>
+    <version>3.1.x.20260630-SNAPSHOT</version>
     <name>${project.groupId}:${project.artifactId}</name>
     <url>https://github.com/easy-4-java/${project.artifactId}</url>
     <packaging>jar</packaging>
@@ -432,7 +432,7 @@
         <maven-surefire-plugin.version>3.5.0</maven-surefire-plugin.version>
         <maven-war-plugin.version>3.4.0</maven-war-plugin.version>
         
-        <spring-boot-starter-security-biz.version>3.3.x.20250712-SNAPSHOT</spring-boot-starter-security-biz.version>
+        <spring-boot-starter-security-biz.version>3.1.x.20260630-SNAPSHOT</spring-boot-starter-security-biz.version>
                 <slf4j.version>2.0.18</slf4j.version>
     </properties>
 
