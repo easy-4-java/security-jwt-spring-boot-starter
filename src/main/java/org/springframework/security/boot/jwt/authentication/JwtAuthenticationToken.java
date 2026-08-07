@@ -55,7 +55,7 @@ public class JwtAuthenticationToken extends AbstractAuthenticationToken {
 	 *
 	 */
 	public JwtAuthenticationToken(Object principal, Object credentials) {
-		super(null);
+		super((Collection<? extends GrantedAuthority>) null);
 		this.principal = principal;
 		this.credentials = credentials;
 		setAuthenticated(false);

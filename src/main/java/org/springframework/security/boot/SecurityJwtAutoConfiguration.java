@@ -2,7 +2,6 @@ package org.springframework.security.boot;
 
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityFilterAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,7 +11,9 @@ import org.springframework.security.boot.jwt.authentication.JwtMatchedAuthentica
 import org.springframework.security.boot.jwt.authentication.JwtMatchedAuthenticationSuccessHandler;
 
 @Configuration
-@AutoConfigureBefore({ SecurityFilterAutoConfiguration.class })
+@AutoConfigureBefore(name = {
+		"org.springframework.boot.security.autoconfigure.web.servlet.SecurityFilterAutoConfiguration"
+})
 @EnableConfigurationProperties({ SecurityBizProperties.class, SecurityJwtAuthcProperties.class })
 public class SecurityJwtAutoConfiguration {
 

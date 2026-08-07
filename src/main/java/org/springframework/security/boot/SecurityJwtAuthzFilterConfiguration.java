@@ -6,12 +6,11 @@ import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityFilterAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.context.properties.PropertyMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.boot.biz.authentication.AuthenticationListener;
@@ -45,7 +44,9 @@ import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 @Configuration
-@AutoConfigureBefore({ SecurityFilterAutoConfiguration.class })
+@AutoConfigureBefore(name = {
+		"org.springframework.boot.security.autoconfigure.web.servlet.SecurityFilterAutoConfiguration"
+})
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @ConditionalOnProperty(prefix = SecurityJwtAuthzProperties.PREFIX, value = "enabled", havingValue = "true")
 @EnableConfigurationProperties({ SecurityBizProperties.class, SecurityJwtAuthcProperties.class, SecurityJwtAuthzProperties.class })
@@ -123,7 +124,7 @@ public class SecurityJwtAuthzFilterConfiguration {
 	    	/*
 			 * 批量设置参数
 			 */
-			PropertyMapper map = PropertyMapper.get().alwaysApplyingWhenNonNull();
+			PropertyMapper map = PropertyMapper.get();
 			
 			map.from(getSessionMgtProperties().isAllowSessionCreation()).to(authenticationFilter::setAllowSessionCreation);
 			map.from(authenticationManagerBean()).to(authenticationFilter::setAuthenticationManager);
@@ -155,7 +156,7 @@ public class SecurityJwtAuthzFilterConfiguration {
 	    }
 
 		@Bean
-		@Order(SecurityProperties.DEFAULT_FILTER_ORDER + 80)
+		@Order(Ordered.HIGHEST_PRECEDENCE + 80)
 		public SecurityFilterChain jwtAuthzSecurityFilterChain(HttpSecurity http) throws Exception {
 
 			http.securityMatcher(authzProperties.getPathPattern())
