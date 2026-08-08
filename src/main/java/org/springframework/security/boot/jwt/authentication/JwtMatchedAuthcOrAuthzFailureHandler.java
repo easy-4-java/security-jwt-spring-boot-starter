@@ -7,7 +7,7 @@ import org.springframework.security.core.AuthenticationException;
 
 /**
  * Jwt认证、授权 (authorization) 失败处理器
- * @author ： <a href="https://github.com/hiwepy">hiwepy</a>
+ * @author [@Loong Wan](https://github.com/loong10k)
  */
 public class JwtMatchedAuthcOrAuthzFailureHandler implements MatchedAuthenticationFailureHandler {
 	
