@@ -1,8 +1,5 @@
 package org.springframework.security.boot.jwt.authentication.server;
 
-import java.util.Objects;
-import java.util.stream.Stream;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpCookie;
 import org.springframework.http.server.reactive.ServerHttpRequest;
@@ -18,14 +15,16 @@ import org.springframework.security.web.server.context.ServerSecurityContextRepo
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.server.ServerWebExchange;
-
 import reactor.core.publisher.Mono;
+
+import java.util.Objects;
+import java.util.stream.Stream;
 
 /**
  * 1、JWT Authorization Security Context Repository For Reactive （负责提取Token，构造 SecurityContext 对象）
  * https://www.jianshu.com/p/e013ca21d91d
  * https://www.baeldung.com/spring-oauth-login-webflux
- * @author 		： <a href="https://github.com/hiwepy">hiwepy</a>
+ * @author [@Loong Wan](https://github.com/loong10k)
  */
 public class JwtServerAuthorizationSecurityContextRepository implements ServerSecurityContextRepository {
 	
@@ -106,7 +105,7 @@ public class JwtServerAuthorizationSecurityContextRepository implements ServerSe
 		securityContext.setAuthentication(authentication);
 		SecurityContextHolder.setContext(securityContext);
 		return Mono.just(securityContext)
-			.subscriberContext(ReactiveSecurityContextHolder.withSecurityContext(Mono.just(securityContext)))
+			.contextWrite(ReactiveSecurityContextHolder.withSecurityContext(Mono.just(securityContext)))
 			.cast(SecurityContext.class);
 	}
 	

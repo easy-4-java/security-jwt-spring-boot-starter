@@ -1,13 +1,13 @@
 package org.springframework.security.boot.jwt.authentication;
 
-import java.util.Collection;
-
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 
+import java.util.Collection;
+
 /**
  * Jwt授权 (authorization) Token
- * @author ： <a href="https://github.com/hiwepy">hiwepy</a>
+ * @author [@Loong Wan](https://github.com/loong10k)
  */
 @SuppressWarnings("serial")
 public class JwtAuthorizationToken extends AbstractAuthenticationToken {
@@ -28,7 +28,7 @@ public class JwtAuthorizationToken extends AbstractAuthenticationToken {
 	private double latitude;
     
     public JwtAuthorizationToken( Object principal, Object credentials) {
-        super(null);
+        super((Collection<? extends GrantedAuthority>) null);
         this.principal = principal;
         this.credentials = credentials;
         this.setAuthenticated(false);

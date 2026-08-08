@@ -15,19 +15,13 @@
  */
 package org.springframework.security.boot.jwt.authentication;
 
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -39,16 +33,21 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.session.NullAuthenticatedSessionStrategy;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * Jwt授权 (authorization)过滤器
  * 
- * @author ： <a href="https://github.com/hiwepy">hiwepy</a>
+ * @author [@Loong Wan](https://github.com/loong10k)
  */
 @Slf4j
 public class JwtAuthorizationProcessingFilter extends AuthenticationProcessingFilter {
@@ -71,11 +70,11 @@ public class JwtAuthorizationProcessingFilter extends AuthenticationProcessingFi
 	private SessionAuthenticationStrategy sessionStrategy = new NullAuthenticatedSessionStrategy();
 	
 	public JwtAuthorizationProcessingFilter() {
-		super(new AntPathRequestMatcher("/**"));
+		super(PathPatternRequestMatcher.pathPattern("/**"));
 	}
 	
 	public JwtAuthorizationProcessingFilter(List<String> ignorePatterns) {
-		super(new AntPathRequestMatcher("/**"));
+		super(PathPatternRequestMatcher.pathPattern("/**"));
 		this.setIgnoreRequestMatcher(ignorePatterns);
 	}
 
@@ -219,7 +218,7 @@ public class JwtAuthorizationProcessingFilter extends AuthenticationProcessingFi
 	public void setIgnoreRequestMatcher(List<String> ignorePatterns) {
 		if(!CollectionUtils.isEmpty(ignorePatterns)) {
 			this.ignoreRequestMatchers = ignorePatterns.stream().map(pattern -> {
-				return new AntPathRequestMatcher(pattern);
+				return PathPatternRequestMatcher.pathPattern(pattern);
 			}).collect(Collectors.toList());
 		}
 	}
