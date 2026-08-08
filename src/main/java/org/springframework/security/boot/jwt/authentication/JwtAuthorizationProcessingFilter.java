@@ -33,7 +33,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.session.NullAuthenticatedSessionStrategy;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -47,7 +47,7 @@ import java.util.stream.Collectors;
 /**
  * Jwt授权 (authorization)过滤器
  * 
- * @author ： <a href="https://github.com/hiwepy">hiwepy</a>
+ * @author [@Loong Wan](https://github.com/loong10k)
  */
 @Slf4j
 public class JwtAuthorizationProcessingFilter extends AuthenticationProcessingFilter {
@@ -70,11 +70,11 @@ public class JwtAuthorizationProcessingFilter extends AuthenticationProcessingFi
 	private SessionAuthenticationStrategy sessionStrategy = new NullAuthenticatedSessionStrategy();
 	
 	public JwtAuthorizationProcessingFilter() {
-		super(new AntPathRequestMatcher("/**"));
+		super(PathPatternRequestMatcher.pathPattern("/**"));
 	}
 	
 	public JwtAuthorizationProcessingFilter(List<String> ignorePatterns) {
-		super(new AntPathRequestMatcher("/**"));
+		super(PathPatternRequestMatcher.pathPattern("/**"));
 		this.setIgnoreRequestMatcher(ignorePatterns);
 	}
 
@@ -218,7 +218,7 @@ public class JwtAuthorizationProcessingFilter extends AuthenticationProcessingFi
 	public void setIgnoreRequestMatcher(List<String> ignorePatterns) {
 		if(!CollectionUtils.isEmpty(ignorePatterns)) {
 			this.ignoreRequestMatchers = ignorePatterns.stream().map(pattern -> {
-				return new AntPathRequestMatcher(pattern);
+				return PathPatternRequestMatcher.pathPattern(pattern);
 			}).collect(Collectors.toList());
 		}
 	}
