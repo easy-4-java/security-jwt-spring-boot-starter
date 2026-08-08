@@ -7,7 +7,7 @@ import java.util.Collection;
 
 /**
  * Jwt授权 (authorization) Token
- * @author ： <a href="https://github.com/hiwepy">hiwepy</a>
+ * @author [@Loong Wan](https://github.com/loong10k)
  */
 @SuppressWarnings("serial")
 public class JwtAuthorizationToken extends AbstractAuthenticationToken {

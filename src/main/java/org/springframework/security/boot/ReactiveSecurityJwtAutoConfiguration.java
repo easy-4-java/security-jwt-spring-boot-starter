@@ -57,7 +57,7 @@ public class ReactiveSecurityJwtAutoConfiguration {
 	
 	/**
 	 * 2、JWT Authentication Converter For Reactive  （负责提取Token）
-	 * @author 		： <a href="https://github.com/hiwepy">hiwepy</a>
+	 * @author [@Loong Wan](https://github.com/loong10k)
 	 * @return
 	 */
 	@Bean
@@ -69,7 +69,7 @@ public class ReactiveSecurityJwtAutoConfiguration {
 	 /**
 	  * 3、JWT Authentication Manager For Reactive （负责校验 Authentication 对象）
 	  * TODO
-	  * @author 		： <a href="https://github.com/hiwepy">hiwepy</a>
+	  * @author [@Loong Wan](https://github.com/loong10k)
 	  * @param payloadRepository
 	  * @return
 	  */
