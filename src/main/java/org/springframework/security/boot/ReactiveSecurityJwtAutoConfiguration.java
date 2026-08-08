@@ -3,23 +3,19 @@ package org.springframework.security.boot;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
-import org.springframework.boot.autoconfigure.security.reactive.ReactiveSecurityAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.boot.biz.userdetails.JwtPayloadRepository;
-import org.springframework.security.boot.jwt.authentication.server.JwtMatchedServerAuthenticationEntryPoint;
-import org.springframework.security.boot.jwt.authentication.server.JwtMatchedServerAuthenticationFailureHandler;
-import org.springframework.security.boot.jwt.authentication.server.JwtMatchedServerAuthenticationSuccessHandler;
-import org.springframework.security.boot.jwt.authentication.server.JwtReactiveAuthenticationManager;
-import org.springframework.security.boot.jwt.authentication.server.JwtServerAuthenticationConverter;
-import org.springframework.security.boot.jwt.authentication.server.JwtServerAuthorizationSecurityContextRepository;
+import org.springframework.security.boot.jwt.authentication.server.*;
 import org.springframework.security.web.server.authentication.ServerAuthenticationConverter;
 import org.springframework.security.web.server.context.ServerSecurityContextRepository;
 
 @Configuration
-@AutoConfigureBefore({ ReactiveSecurityAutoConfiguration.class })
+@AutoConfigureBefore(name = {
+		"org.springframework.boot.security.autoconfigure.web.reactive.ReactiveWebSecurityAutoConfiguration"
+})
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
 @EnableConfigurationProperties({ SecurityBizProperties.class, SecurityJwtAuthcProperties.class, SecurityJwtAuthzProperties.class })
 public class ReactiveSecurityJwtAutoConfiguration {
@@ -61,7 +57,7 @@ public class ReactiveSecurityJwtAutoConfiguration {
 	
 	/**
 	 * 2、JWT Authentication Converter For Reactive  （负责提取Token）
-	 * @author 		： <a href="https://github.com/hiwepy">hiwepy</a>
+	 * @author [@Loong Wan](https://github.com/loong10k)
 	 * @return
 	 */
 	@Bean
@@ -73,7 +69,7 @@ public class ReactiveSecurityJwtAutoConfiguration {
 	 /**
 	  * 3、JWT Authentication Manager For Reactive （负责校验 Authentication 对象）
 	  * TODO
-	  * @author 		： <a href="https://github.com/hiwepy">hiwepy</a>
+	  * @author [@Loong Wan](https://github.com/loong10k)
 	  * @param payloadRepository
 	  * @return
 	  */

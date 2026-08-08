@@ -15,14 +15,14 @@
  */
 package org.springframework.security.boot.jwt.authentication;
 
-import java.util.Collection;
-
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 
+import java.util.Collection;
+
 /**
  * Jwt认证 (authentication) Token
- * @author ： <a href="https://github.com/hiwepy">hiwepy</a>
+ * @author [@Loong Wan](https://github.com/loong10k)
  */
 @SuppressWarnings("serial")
 public class JwtAuthenticationToken extends AbstractAuthenticationToken {
@@ -55,7 +55,7 @@ public class JwtAuthenticationToken extends AbstractAuthenticationToken {
 	 *
 	 */
 	public JwtAuthenticationToken(Object principal, Object credentials) {
-		super(null);
+		super((Collection<? extends GrantedAuthority>) null);
 		this.principal = principal;
 		this.credentials = credentials;
 		setAuthenticated(false);

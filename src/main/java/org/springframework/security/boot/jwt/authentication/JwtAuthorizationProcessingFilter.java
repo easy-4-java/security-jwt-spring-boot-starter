@@ -15,21 +15,13 @@
  */
 package org.springframework.security.boot.jwt.authentication;
 
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -41,20 +33,25 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.session.NullAuthenticatedSessionStrategy;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * Jwt授权 (authorization)过滤器
- *
- * @author ： <a href="https://github.com/hiwepy">hiwepy</a>
+ * 
+ * @author [@Loong Wan](https://github.com/loong10k)
  */
 @Slf4j
 public class JwtAuthorizationProcessingFilter extends AuthenticationProcessingFilter {
-
+	
 	/**
 	 * HTTP Authorization Param, equal to <code>token</code>
 	 */
@@ -63,27 +60,21 @@ public class JwtAuthorizationProcessingFilter extends AuthenticationProcessingFi
 	 * HTTP Authorization header, equal to <code>X-Authorization</code>
 	 */
 	public static final String AUTHORIZATION_HEADER = "X-Authorization";
-
-	@Setter
-    @Getter
-    private String authorizationHeaderName = AUTHORIZATION_HEADER;
-	@Setter
-    @Getter
-    private String authorizationParamName = AUTHORIZATION_PARAM;
-	@Setter
-    @Getter
-    private String authorizationCookieName = AUTHORIZATION_PARAM;
-
+	
+	private String authorizationHeaderName = AUTHORIZATION_HEADER;
+	private String authorizationParamName = AUTHORIZATION_PARAM;
+	private String authorizationCookieName = AUTHORIZATION_PARAM;
+	
 	private List<RequestMatcher> ignoreRequestMatchers;
-
+	
 	private SessionAuthenticationStrategy sessionStrategy = new NullAuthenticatedSessionStrategy();
-
+	
 	public JwtAuthorizationProcessingFilter() {
-		super(new AntPathRequestMatcher("/**"));
+		super(PathPatternRequestMatcher.pathPattern("/**"));
 	}
-
+	
 	public JwtAuthorizationProcessingFilter(List<String> ignorePatterns) {
-		super(new AntPathRequestMatcher("/**"));
+		super(PathPatternRequestMatcher.pathPattern("/**"));
 		this.setIgnoreRequestMatcher(ignorePatterns);
 	}
 
@@ -110,7 +101,7 @@ public class JwtAuthorizationProcessingFilter extends AuthenticationProcessingFi
 
 		ServletRequestAttributes requestAttributes = new ServletRequestAttributes(request, response);
 		RequestContextHolder.setRequestAttributes(requestAttributes, true);
-
+		
 		if (!requiresAuthentication(request, response)) {
 			chain.doFilter(request, response);
 			return;
@@ -145,21 +136,21 @@ public class JwtAuthorizationProcessingFilter extends AuthenticationProcessingFi
 
 			return;
 		}
-
+		
 		successfulAuthentication(request, response, chain, authResult);
 
 		// Authorization success
 		chain.doFilter(request, response);
-
+		
 	}
-
+	
 	@Override
 	public void setSessionAuthenticationStrategy(
 			SessionAuthenticationStrategy sessionStrategy) {
 		super.setSessionAuthenticationStrategy(sessionStrategy);
 		this.sessionStrategy = sessionStrategy;
 	}
-
+	
 	@Override
 	public Authentication doAttemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws AuthenticationException, IOException, ServletException {
@@ -171,23 +162,22 @@ public class JwtAuthorizationProcessingFilter extends AuthenticationProcessingFi
 		}
 
 		token = token.trim();
-
+		
 		if(StringUtils.isBlank(token)) {
 			throw new AuthenticationJwtNotFoundException("JWT not provided");
 		}
-
+		
 		JwtAuthorizationToken authRequest = new JwtAuthorizationToken(this.obtainUid(request), token);
 		authRequest.setLongitude(this.obtainLongitude(request));
 		authRequest.setLatitude(this.obtainLatitude(request));
 		authRequest.setSign(this.obtainSign(request));
-
+		
 		// Allow subclasses to set the "details" property
 		setDetails(request, authRequest);
-
+		
 		return this.getAuthenticationManager().authenticate(authRequest);
 	}
 
-	@Override
 	protected void setDetails(HttpServletRequest request, AbstractAuthenticationToken authRequest) {
 		authRequest.setDetails(authenticationDetailsSource.buildDetails(request));
 	}
@@ -195,11 +185,15 @@ public class JwtAuthorizationProcessingFilter extends AuthenticationProcessingFi
 	protected String obtainToken(HttpServletRequest request) {
 		//	从header中获取token
 		String token = request.getHeader(getAuthorizationHeaderName());
-		log.debug("obtain token from header : {}, token : {}", getAuthorizationHeaderName(), token);
+		if(!StringUtils.isEmpty(token)){
+			log.info("obtain token from header : {}", token);
+		}
 		//	如果header中不存在token，则从参数中获取token
 		if (StringUtils.isEmpty(token)) {
 			token = request.getParameter(getAuthorizationParamName());
-			log.debug("obtain token from param : {}, token : {}", getAuthorizationParamName(), token);
+			if(!StringUtils.isEmpty(token)){
+				log.info("obtain token from param : {}", token);
+			}
 		}
 		//	从 cookie 获取 token
 		if (StringUtils.isEmpty(token)) {
@@ -211,24 +205,50 @@ public class JwtAuthorizationProcessingFilter extends AuthenticationProcessingFi
 			for (Cookie cookie : cookies) {
 				if (cookie.getName().equals(getAuthorizationCookieName())) {
 					token = cookie.getValue();
-					log.debug("obtain token from cookie : {}, token : {}", getAuthorizationCookieName(), token);
+					if(!StringUtils.isEmpty(token)){
+						log.info("obtain token from cookie : {}", token);
+					}
 					break;
 				}
 			}
 		}
 		return token;
 	}
-
+	
 	public void setIgnoreRequestMatcher(List<String> ignorePatterns) {
 		if(!CollectionUtils.isEmpty(ignorePatterns)) {
 			this.ignoreRequestMatchers = ignorePatterns.stream().map(pattern -> {
-				return new AntPathRequestMatcher(pattern);
+				return PathPatternRequestMatcher.pathPattern(pattern);
 			}).collect(Collectors.toList());
 		}
 	}
-
+	
 	public void setIgnoreRequestMatchers(RequestMatcher ...ignoreRequestMatchers) {
 		this.ignoreRequestMatchers = Arrays.asList(ignoreRequestMatchers);
+	}
+
+	public String getAuthorizationHeaderName() {
+		return authorizationHeaderName;
+	}
+
+	public void setAuthorizationHeaderName(String authorizationHeaderName) {
+		this.authorizationHeaderName = authorizationHeaderName;
+	}
+
+	public String getAuthorizationParamName() {
+		return authorizationParamName;
+	}
+
+	public void setAuthorizationParamName(String authorizationParamName) {
+		this.authorizationParamName = authorizationParamName;
+	}
+
+	public String getAuthorizationCookieName() {
+		return authorizationCookieName;
+	}
+
+	public void setAuthorizationCookieName(String authorizationCookieName) {
+		this.authorizationCookieName = authorizationCookieName;
 	}
 
 }
