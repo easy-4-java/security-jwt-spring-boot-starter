@@ -26,7 +26,7 @@ import org.springframework.security.core.AuthenticationException;
 
 /**
  * Jwt认证 (authentication)处理端点
- * @author 		： <a href="https://github.com/hiwepy">wandl</a>
+ * @author [@Loong Wan](https://github.com/loong10k)
  */
 public class JwtMatchedAuthenticationEntryPoint implements MatchedAuthenticationEntryPoint {
 

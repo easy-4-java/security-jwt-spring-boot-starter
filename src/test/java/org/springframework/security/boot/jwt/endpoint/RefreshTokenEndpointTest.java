@@ -13,19 +13,26 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.springframework.security.boot.jwt.authentication.server;
+package org.springframework.security.boot.jwt.endpoint;
 
-import org.springframework.security.authentication.ReactiveAuthenticationManager;
-import org.springframework.security.web.server.authentication.AuthenticationWebFilter;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * 1、JWT Authentication Filter For Reactive  （负责请求拦截）
+ * Unit tests for {{ @link RefreshTokenEndpoint }}.
+ *
  * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 1.0.0
  */
-public class JwtAuthenticationWebFilter extends AuthenticationWebFilter {
+@DisplayName("RefreshTokenEndpoint Tests")
+class RefreshTokenEndpointTest {
 
-	public JwtAuthenticationWebFilter(ReactiveAuthenticationManager authenticationManager) {
-		super(authenticationManager);
-	}
-	
+    @Test
+    @DisplayName("Endpoint class can be instantiated")
+    void testInstantiation() {
+        RefreshTokenEndpoint endpoint = new RefreshTokenEndpoint();
+        assertThat(endpoint).isNotNull();
+    }
 }
