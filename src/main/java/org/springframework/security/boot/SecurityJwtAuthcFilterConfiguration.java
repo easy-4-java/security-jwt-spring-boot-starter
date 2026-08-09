@@ -41,6 +41,13 @@ import org.springframework.security.web.authentication.session.SessionAuthentica
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Servlet auto-configuration that registers the JWT authentication (login) filter chain and
+ * its {@link JwtAuthenticationProvider}, active when
+ * {@code spring.security.jwt.authc.enabled=true} and the application is a servlet web app.
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 1.0.0
+ */
 @Configuration
 @AutoConfigureBefore(name = {
 		"org.springframework.boot.security.autoconfigure.web.servlet.SecurityFilterAutoConfiguration"
@@ -50,12 +57,24 @@ import java.util.stream.Collectors;
 @EnableConfigurationProperties({ SecurityBizProperties.class, SecurityJwtAuthcProperties.class })
 public class SecurityJwtAuthcFilterConfiguration {
 
+	/**
+	 * Register the {@link JwtAuthenticationProvider} bean, falling back to defaults when no
+	 * {@link UserDetailsServiceAdapter} or {@link PasswordEncoder} is present.
+	 * @param userDetailsServiceProvider the optional user-details-service provider
+	 * @param passwordEncoderProvider the optional password-encoder provider
+	 * @return a configured {@link JwtAuthenticationProvider}
+	 */
 	@Bean
 	public JwtAuthenticationProvider jwtAuthenticationProvider(ObjectProvider<UserDetailsServiceAdapter> userDetailsServiceProvider,
 															   ObjectProvider<PasswordEncoder> passwordEncoderProvider) {
 		return new JwtAuthenticationProvider(userDetailsServiceProvider.getIfAvailable(), passwordEncoderProvider.getIfAvailable());
 	}
 	
+	/**
+	 * Nested configuration that builds the {@link SecurityFilterChain} used for JWT
+	 * authentication, wiring up the authentication filter, success/failure handlers, captcha
+	 * support and CSRF/CORS/headers configuration.
+	 */
 	@Configuration
 	@ConditionalOnProperty(prefix = SecurityJwtAuthcProperties.PREFIX, value = "enabled", havingValue = "true")
 	@EnableConfigurationProperties({ SecurityBizProperties.class, SecurityJwtAuthcProperties.class })
@@ -115,13 +134,16 @@ public class SecurityJwtAuthcFilterConfiguration {
    			
 		}
 
+		/**
+		 * Build the {@link JwtAuthenticationProcessingFilter}, mapping properties onto the
+		 * filter for session creation, captcha handling, retry counting and other behaviour.
+		 * @return the configured authentication filter
+		 * @throws Exception if the underlying authentication manager cannot be resolved
+		 */
 		public JwtAuthenticationProcessingFilter authenticationProcessingFilter() throws Exception {
 	    	
 	        JwtAuthenticationProcessingFilter authenticationFilter = new JwtAuthenticationProcessingFilter(objectMapper);
 	        
-	        /**
-			 * 批量设置参数
-			 */
 			PropertyMapper map = PropertyMapper.get();
 			
 			map.from(getSessionMgtProperties().isAllowSessionCreation()).to(authenticationFilter::setAllowSessionCreation);
@@ -133,17 +155,17 @@ public class SecurityJwtAuthcFilterConfiguration {
 			map.from(authcProperties.getPathPattern()).to(authenticationFilter::setFilterProcessesUrl);
 			
 			map.from(authcProperties.getCaptcha().getParamName()).to(authenticationFilter::setCaptchaParameter);
-			// 是否验证码必填
+			// whethercaptcha必填
 			map.from(authcProperties.getCaptcha().isRequired()).to(authenticationFilter::setCaptchaRequired);
-			// 验证码解析器
+			// captcha解析器
 			map.from(captchaResolver).to(authenticationFilter::setCaptchaResolver);
-			// 认证失败计数器
+			// authenticationfailure计数器
 			map.from(authenticatingFailureCounter).to(authenticationFilter::setFailureCounter);
 			
 			map.from(authcProperties.getUsernameParameter()).to(authenticationFilter::setUsernameParameter);
 			map.from(authcProperties.getPasswordParameter()).to(authenticationFilter::setPasswordParameter);
 			map.from(authcProperties.isPostOnly()).to(authenticationFilter::setPostOnly);
-			// 登陆失败重试次数，超出限制需要输入验证码
+			// 登陆failureretry次数，超出限制需要输入captcha
 			map.from(authcProperties.getRetry().getRetryTimesKeyAttribute()).to(authenticationFilter::setRetryTimesKeyAttribute);
 			map.from(authcProperties.getRetry().getRetryTimesWhenAccessDenied()).to(authenticationFilter::setRetryTimesWhenAccessDenied);
 			
@@ -154,6 +176,13 @@ public class SecurityJwtAuthcFilterConfiguration {
 	        return authenticationFilter;
 	    }
 
+		/**
+		 * Build the {@link SecurityFilterChain} that performs JWT authentication for the path
+		 * pattern configured under {@code spring.security.jwt.authc.path-pattern}.
+		 * @param http the {@link HttpSecurity} to configure
+		 * @return the configured {@link SecurityFilterChain}
+		 * @throws Exception if the filter chain cannot be built
+		 */
 		@Bean
 		@Order(Ordered.HIGHEST_PRECEDENCE + 9)
 		public SecurityFilterChain jwtAuthcSecurityFilterChain(HttpSecurity http) throws Exception {

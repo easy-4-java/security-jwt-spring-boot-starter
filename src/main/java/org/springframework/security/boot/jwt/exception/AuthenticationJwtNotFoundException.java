@@ -2,6 +2,11 @@ package org.springframework.security.boot.jwt.exception;
 
 import org.springframework.security.boot.biz.exception.AuthResponseCode;
 import org.springframework.security.boot.biz.exception.AuthenticationExceptionAdapter;
+/**
+ * Thrown when no JWT is present in the request but one is required.
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 1.0.0
+ */
 @SuppressWarnings("serial")
 public class AuthenticationJwtNotFoundException extends AuthenticationExceptionAdapter {
 

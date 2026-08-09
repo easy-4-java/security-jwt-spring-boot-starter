@@ -21,10 +21,11 @@ import java.util.Objects;
 import java.util.stream.Stream;
 
 /**
- * 1、JWT Authorization Security Context Repository For Reactive （负责提取Token，构造 SecurityContext 对象）
- * https://www.jianshu.com/p/e013ca21d91d
- * https://www.baeldung.com/spring-oauth-login-webflux
+ * Reactive {@link ServerSecurityContextRepository} that extracts the JWT from the incoming
+ * request, uses the {@code ReactiveAuthenticationManager} to build an
+ * {@code Authentication}, and stores the result in a {@code SecurityContext}.
  * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 1.0.0
  */
 public class JwtServerAuthorizationSecurityContextRepository implements ServerSecurityContextRepository {
 	
@@ -85,7 +86,7 @@ public class JwtServerAuthorizationSecurityContextRepository implements ServerSe
 			return Mono.empty();
 		}
 		return Mono.just(request).flatMap( matchResult -> Mono.just(this.obtainToken(request)))
-				// 3、没有获取到，则抛出异常
+				// 3、没有gets到，则抛出exception
 				.switchIfEmpty(Mono.defer(() -> Mono.error(new AuthenticationJwtNotFoundException("Token not provided"))))
 				// 4、构造 JwtAuthorizationToken
 				.flatMap( token -> {
@@ -95,7 +96,7 @@ public class JwtServerAuthorizationSecurityContextRepository implements ServerSe
 					authRequest.setSign(this.obtainSign(request));
 					return Mono.justOrEmpty(authRequest);
 				})
-				// 5、调用认证接口，并构造 SecurityContext
+				// 5、调用authentication接口，并构造 SecurityContext
 				.flatMap( authRequest -> this.authenticationManager.authenticate(authRequest))
 				.flatMap(authentication -> onAuthenticationSuccess(authentication, serverWebExchange));
 	}
@@ -138,14 +139,14 @@ public class JwtServerAuthorizationSecurityContextRepository implements ServerSe
 	}
 	
 	protected String obtainToken(ServerHttpRequest request) {
-		// 从header中获取token
+		// 从header中getstoken
 		String token = request.getHeaders().getFirst(getAuthorizationHeaderName());
-		// 如果header中不存在token，则从参数中获取token
+		// 如果header中不存在token，则从参数中getstoken
 		if (StringUtils.isEmpty(token)) {
 			return request.getQueryParams().getFirst(getAuthorizationParamName());
 		}
 		if (StringUtils.isEmpty(token)) {
-			// 从 cookie 获取 token
+			// 从 cookie gets token
 			MultiValueMap<String, HttpCookie> cookies = request.getCookies();
 			if (null == cookies || cookies.size() == 0) {
 				return null;

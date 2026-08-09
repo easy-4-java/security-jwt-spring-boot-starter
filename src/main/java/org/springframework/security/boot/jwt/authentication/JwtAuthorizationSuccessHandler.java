@@ -26,8 +26,10 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import java.io.IOException;
 
 /**
- * TODO
+ * {@link AuthenticationSuccessHandler} used by the JWT authorization filter that simply clears
+ * any temporary authentication attributes stored in the session.
  * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 1.0.0
  */
 public class JwtAuthorizationSuccessHandler implements AuthenticationSuccessHandler {
 

@@ -37,7 +37,11 @@ import reactor.core.publisher.Mono;
 import java.nio.charset.StandardCharsets;
 
 /**
- * 4、JWT Authentication Success Handler For Reactive （负责认证成功处理）
+ * Reactive {@link MatchedServerAuthenticationSuccessHandler} for JWT authentication that
+ * serialises the authenticated user profile, together with an {@link AuthResponse}, back to
+ * the client as JSON.
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 1.0.0
  */
 public class JwtMatchedServerAuthenticationSuccessHandler implements MatchedServerAuthenticationSuccessHandler {
 
@@ -45,6 +49,11 @@ public class JwtMatchedServerAuthenticationSuccessHandler implements MatchedServ
 	private JwtPayloadRepository payloadRepository;
 	private boolean checkExpiry = false;
 	
+	/**
+	 * Create a new handler backed by the given {@link JwtPayloadRepository}.
+	 * @param payloadRepository the repository used to resolve the user profile
+	 * @param checkExpiry whether the JWT expiry should be checked when resolving the profile
+	 */
 	public JwtMatchedServerAuthenticationSuccessHandler(JwtPayloadRepository payloadRepository, boolean checkExpiry) {
 		this.setPayloadRepository(payloadRepository);
 		this.checkExpiry = checkExpiry;
@@ -58,17 +67,17 @@ public class JwtMatchedServerAuthenticationSuccessHandler implements MatchedServ
 	@Override
 	public Mono<Void> onAuthenticationSuccess(WebFilterExchange webFilterExchange, Authentication authentication) {
 
-		// 1、获取ServerHttpResponse
+		// 1、getsServerHttpResponse
 		ServerHttpResponse response = webFilterExchange.getExchange().getResponse();
 		
-    	// 2、设置状态码和响应头
+    	// 2、sets状态码和response头
 		response.setStatusCode(HttpStatus.OK);
 		response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
 		
-		// 3、国际化后的异常信息
+		// 3、国际化后的exceptioninfo
 		String message = messages.getMessage(AuthResponseCode.SC_AUTHC_SUCCESS.getMsgKey());
 		
-		// 4、获取认证账号详情
+		// 4、getsauthentication账号详情
 		UserProfilePayload profilePayload = getPayloadRepository().getProfilePayload((AbstractAuthenticationToken) authentication, isCheckExpiry());
 		
 		// 5、输出JSON格式数据

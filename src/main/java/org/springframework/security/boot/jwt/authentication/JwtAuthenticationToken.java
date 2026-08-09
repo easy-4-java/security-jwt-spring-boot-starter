@@ -21,8 +21,9 @@ import org.springframework.security.core.GrantedAuthority;
 import java.util.Collection;
 
 /**
- * Jwt认证 (authentication) Token
+ * Authentication token carrying the username and password submitted during JWT login.
  * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 1.0.0
  */
 @SuppressWarnings("serial")
 public class JwtAuthenticationToken extends AbstractAuthenticationToken {
@@ -33,15 +34,15 @@ public class JwtAuthenticationToken extends AbstractAuthenticationToken {
 	private final Object principal;
 	private Object credentials;
 	/**
-	 * 请求参数签名（可选）
+	 * Optional request signature parameter.
 	 */
 	private String sign;
 	/**
-	 * 用户最新经度（可选）
+	 * Optional most recent longitude reported by the user.
 	 */
 	private double longitude;
 	/**
-	 * 用户最新纬度（可选）
+	 * Optional most recent latitude reported by the user.
 	 */
 	private double latitude;
 	

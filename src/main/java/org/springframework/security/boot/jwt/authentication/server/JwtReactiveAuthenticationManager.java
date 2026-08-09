@@ -43,7 +43,10 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * 3、JWT Authentication Manager For Reactive （负责校验 Authentication 对象）
+ * Reactive {@link ReactiveAuthenticationManager} that verifies the supplied JWT and builds an
+ * authenticated {@link Authentication} from its payload.
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 1.0.0
  */
 public class JwtReactiveAuthenticationManager implements ReactiveAuthenticationManager  {
 
@@ -54,6 +57,10 @@ public class JwtReactiveAuthenticationManager implements ReactiveAuthenticationM
     private boolean checkExpiry = false;
     private boolean checkPrincipal = false;
     
+    /**
+     * Create a new manager backed by the given {@link JwtPayloadRepository}.
+     * @param payloadRepository the repository used to verify tokens and resolve their payload
+     */
     public JwtReactiveAuthenticationManager(final JwtPayloadRepository payloadRepository) {
         this.payloadRepository = payloadRepository;
     }
@@ -82,21 +89,21 @@ public class JwtReactiveAuthenticationManager implements ReactiveAuthenticationM
 			throw new AuthenticationJwtExpiredException("Token Expired");
 		}
 		
-		// 解析Token载体信息
+		// 解析Token载体info
 		JwtPayload payload = getPayloadRepository().getPayload(jwtToken, checkExpiry);
 		
-		// 如果 checkPrincipal = true; 则需要验证 X-Uid 值是否有效即传递的值是否和Token中的值相同
+		// 如果 checkPrincipal = true; 则需要validate X-Uid 值whether有效即传递的值whether和Token中的值相同
 		if(this.isCheckPrincipal() && !StringUtils.equals(xuid, payload.getSubject())) {
 			throw new AuthenticationJwtInvalidException("Token Invalid");
 		}
 		
 		Set<GrantedAuthority> grantedAuthorities = new HashSet<GrantedAuthority>();
 		
-		// 角色必须是ROLE_开头，可以在数据库中设置
+		// 角色必须是ROLE_开头，可以在数据库中sets
         GrantedAuthority grantedAuthority = new SimpleGrantedAuthority("ROLE_"+ payload.getRkey());
         grantedAuthorities.add(grantedAuthority);
    		
-   		// 用户权限标记集合
+   		// userpermission标记集合
    		Set<String> perms = payload.getPerms();
 		for (String perm : perms ) {
 			GrantedAuthority authority = new SimpleGrantedAuthority(perm);

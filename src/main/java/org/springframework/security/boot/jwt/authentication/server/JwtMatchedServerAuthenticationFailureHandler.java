@@ -21,7 +21,10 @@ import org.springframework.security.boot.utils.SubjectUtils;
 import org.springframework.security.core.AuthenticationException;
 
 /**
- * 5、JWT Authentication Failure Handler For Reactive （负责认证失败处理）
+ * Reactive {@link MatchedServerAuthenticationFailureHandler} that supports all JWT-related
+ * authentication failure exceptions raised by this starter.
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 1.0.0
  */
 public class JwtMatchedServerAuthenticationFailureHandler implements MatchedServerAuthenticationFailureHandler {
 

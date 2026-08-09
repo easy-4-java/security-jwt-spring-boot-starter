@@ -22,8 +22,11 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 /**
- * Jwt认证 (authentication)成功回调器：讲认证信息写回前端
+ * {@link MatchedAuthenticationSuccessHandler} for JWT authentication that serialises the
+ * authenticated user profile, together with an {@link AuthResponse}, back to the client as
+ * JSON.
  * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 1.0.0
  */
 public class JwtMatchedAuthenticationSuccessHandler implements MatchedAuthenticationSuccessHandler {
 
@@ -31,6 +34,10 @@ public class JwtMatchedAuthenticationSuccessHandler implements MatchedAuthentica
 	private JwtPayloadRepository payloadRepository;
 	private boolean checkExpiry = false;
 
+	/**
+	 * Create a new handler backed by the given {@link JwtPayloadRepository}.
+	 * @param payloadRepository the repository used to resolve the user profile
+	 */
 	public JwtMatchedAuthenticationSuccessHandler(JwtPayloadRepository payloadRepository) {
 		this.setPayloadRepository(payloadRepository);
 	}
@@ -44,11 +51,11 @@ public class JwtMatchedAuthenticationSuccessHandler implements MatchedAuthentica
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
             Authentication authentication) throws IOException, ServletException {
 
-    	// 设置状态码和响应头
+    	// sets状态码和response头
 		response.setStatus(HttpStatus.OK.value());
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 		response.setCharacterEncoding(StandardCharsets.UTF_8.name());
-		// 国际化后的异常信息
+		// 国际化后的exceptioninfo
 		String message = messages.getMessage(AuthResponseCode.SC_AUTHC_SUCCESS.getMsgKey());
 		// 写出JSON
 		UserProfilePayload profilePayload = getPayloadRepository().getProfilePayload((AbstractAuthenticationToken) authentication, isCheckExpiry());

@@ -45,9 +45,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Jwt授权 (authorization)过滤器
- * 
+ * Filter that authorises incoming requests by extracting a JWT from the configured header,
+ * request parameter or cookie and feeding it to the {@code AuthenticationManager}.
  * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 1.0.0
  */
 @Slf4j
 public class JwtAuthorizationProcessingFilter extends AuthenticationProcessingFilter {
@@ -69,10 +70,17 @@ public class JwtAuthorizationProcessingFilter extends AuthenticationProcessingFi
 	
 	private SessionAuthenticationStrategy sessionStrategy = new NullAuthenticatedSessionStrategy();
 	
+	/**
+	 * Create a filter that matches every request ({@code /**}).
+	 */
 	public JwtAuthorizationProcessingFilter() {
 		super(PathPatternRequestMatcher.pathPattern("/**"));
 	}
 	
+	/**
+	 * Create a filter that matches every request ({@code /**}) but skips the given patterns.
+	 * @param ignorePatterns request patterns that should not be authorised
+	 */
 	public JwtAuthorizationProcessingFilter(List<String> ignorePatterns) {
 		super(PathPatternRequestMatcher.pathPattern("/**"));
 		this.setIgnoreRequestMatcher(ignorePatterns);
@@ -80,7 +88,7 @@ public class JwtAuthorizationProcessingFilter extends AuthenticationProcessingFi
 
 	@Override
 	protected boolean requiresAuthentication(HttpServletRequest request, HttpServletResponse response) {
-		// 忽略部分请求
+		// ignore部分request
 		if(!CollectionUtils.isEmpty(ignoreRequestMatchers)) {
 			for (RequestMatcher requestMatcher : ignoreRequestMatchers) {
 				if(requestMatcher.matches(request)) {
@@ -88,7 +96,7 @@ public class JwtAuthorizationProcessingFilter extends AuthenticationProcessingFi
 				}
 			}
 		}
-		// 登录获取JWT的请求不拦截
+		// logingetsJWT的request不拦截
 		return super.requiresAuthentication(request, response);
 	}
 
@@ -183,21 +191,21 @@ public class JwtAuthorizationProcessingFilter extends AuthenticationProcessingFi
 	}
 
 	protected String obtainToken(HttpServletRequest request) {
-		//	从header中获取token
+		//	从header中getstoken
 		String token = request.getHeader(getAuthorizationHeaderName());
 		if(!StringUtils.isEmpty(token)){
 			log.info("obtain token from header : {}", token);
 		}
-		//	如果header中不存在token，则从参数中获取token
+		//	如果header中不存在token，则从参数中getstoken
 		if (StringUtils.isEmpty(token)) {
 			token = request.getParameter(getAuthorizationParamName());
 			if(!StringUtils.isEmpty(token)){
 				log.info("obtain token from param : {}", token);
 			}
 		}
-		//	从 cookie 获取 token
+		//	从 cookie gets token
 		if (StringUtils.isEmpty(token)) {
-			// 从 cookie 获取 token
+			// 从 cookie gets token
 			Cookie[] cookies = request.getCookies();
 			if (ArrayUtils.isEmpty(cookies)) {
 				return null;

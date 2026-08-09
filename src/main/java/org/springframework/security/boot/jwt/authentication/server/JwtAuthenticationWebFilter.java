@@ -19,11 +19,17 @@ import org.springframework.security.authentication.ReactiveAuthenticationManager
 import org.springframework.security.web.server.authentication.AuthenticationWebFilter;
 
 /**
- * 1、JWT Authentication Filter For Reactive  （负责请求拦截）
+ * Reactive {@link AuthenticationWebFilter} that intercepts requests and authenticates them
+ * using the supplied {@link ReactiveAuthenticationManager}.
  * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 1.0.0
  */
 public class JwtAuthenticationWebFilter extends AuthenticationWebFilter {
 
+	/**
+	 * Create a new filter using the given authentication manager.
+	 * @param authenticationManager the manager used to authenticate incoming requests
+	 */
 	public JwtAuthenticationWebFilter(ReactiveAuthenticationManager authenticationManager) {
 		super(authenticationManager);
 	}

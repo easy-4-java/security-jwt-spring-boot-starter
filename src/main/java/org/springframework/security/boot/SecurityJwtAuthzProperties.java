@@ -30,6 +30,12 @@ import org.springframework.security.boot.biz.property.SecurityHeadersProperties;
 import org.springframework.security.boot.jwt.authentication.JwtAuthorizationProcessingFilter;
 import org.springframework.security.core.Authentication;
 
+/**
+ * SecurityJwtAuthzProperties.
+ *
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 1.0.0
+ */
 @ConfigurationProperties(prefix = SecurityJwtAuthzProperties.PREFIX)
 @Getter
 @Setter
@@ -46,7 +52,7 @@ public class SecurityJwtAuthzProperties {
 	private String pathPattern = "/**";
 	private String[] ignorePatterns = new String[] {"/login/jwt"};
 	/**
-	 * 未授权页面：无权限时的跳转路径
+	 * 未authorization页面：无permission时的跳转path
 	 */
 	private String accessDeniedUrl = "/errors/401";
 	

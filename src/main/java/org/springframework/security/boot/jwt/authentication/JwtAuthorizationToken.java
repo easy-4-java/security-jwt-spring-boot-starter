@@ -6,8 +6,9 @@ import org.springframework.security.core.GrantedAuthority;
 import java.util.Collection;
 
 /**
- * Jwt授权 (authorization) Token
+ * Authentication token carrying the JWT used to authorise an incoming request.
  * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 1.0.0
  */
 @SuppressWarnings("serial")
 public class JwtAuthorizationToken extends AbstractAuthenticationToken {
@@ -15,18 +16,23 @@ public class JwtAuthorizationToken extends AbstractAuthenticationToken {
 	private final Object principal;
 	private Object credentials;
 	/**
-	 * 请求参数签名（可选）
+	 * Optional request signature parameter.
 	 */
 	private String sign;
 	/**
-	 * 用户最新经度（可选）
+	 * Optional most recent longitude reported by the user.
 	 */
 	private double longitude;
 	/**
-	 * 用户最新纬度（可选）
+	 * Optional most recent latitude reported by the user.
 	 */
 	private double latitude;
     
+	/**
+	 * Create an unauthenticated token with the given principal and credentials.
+	 * @param principal the principal (typically the user id)
+	 * @param credentials the credentials (the JWT)
+	 */
     public JwtAuthorizationToken( Object principal, Object credentials) {
         super((Collection<? extends GrantedAuthority>) null);
         this.principal = principal;
@@ -34,6 +40,12 @@ public class JwtAuthorizationToken extends AbstractAuthenticationToken {
         this.setAuthenticated(false);
     }
 
+    /**
+     * Create an authenticated token with the given principal, credentials and authorities.
+     * @param principal the authenticated principal
+     * @param credentials the credentials (the JWT)
+     * @param authorities the granted authorities
+     */
     public JwtAuthorizationToken( Object principal, Object credentials, Collection<? extends GrantedAuthority> authorities) {
         super(authorities);
         this.eraseCredentials();

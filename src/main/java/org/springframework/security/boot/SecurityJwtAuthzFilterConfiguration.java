@@ -43,6 +43,12 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
+/**
+ * SecurityJwtAuthzFilterConfiguration.
+ *
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 1.0.0
+ */
 @Configuration
 @AutoConfigureBefore(name = {
 		"org.springframework.boot.security.autoconfigure.web.servlet.SecurityFilterAutoConfiguration"
@@ -122,7 +128,7 @@ public class SecurityJwtAuthzFilterConfiguration {
 	    	JwtAuthorizationProcessingFilter authenticationFilter = new JwtAuthorizationProcessingFilter();
 			
 	    	/*
-			 * 批量设置参数
+			 * 批量sets参数
 			 */
 			PropertyMapper map = PropertyMapper.get();
 			
@@ -138,7 +144,7 @@ public class SecurityJwtAuthzFilterConfiguration {
 			map.from(sessionAuthenticationStrategy).to(authenticationFilter::setSessionAuthenticationStrategy);
 			map.from(authzProperties.isContinueChainBeforeSuccessfulAuthentication()).to(authenticationFilter::setContinueChainBeforeSuccessfulAuthentication);
 			
-			// 对过滤链按过滤器名称进行分组
+			// 对过滤链按filtername进行分组
 			List<Entry<String, String>> noneEntries = bizProperties.getFilterChainDefinitionMap().entrySet().stream()
 					.filter(predicate -> {
 						return "anon".equalsIgnoreCase(predicate.getValue());
@@ -148,7 +154,7 @@ public class SecurityJwtAuthzFilterConfiguration {
    			if (!CollectionUtils.isEmpty(noneEntries)) {
    				ignorePatterns = noneEntries.stream().map(Entry::getKey).collect(Collectors.toList());
    			}
-   			// 登录地址不拦截 
+   			// loginaddress不拦截 
    			ignorePatterns.add(authcProperties.getPathPattern());
 			authenticationFilter.setIgnoreRequestMatcher(ignorePatterns);
 			

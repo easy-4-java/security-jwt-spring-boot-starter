@@ -26,9 +26,10 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * 
- * Jwt授权 (authorization)处理器
+ * Authentication provider that authorises incoming requests by verifying the supplied JWT and
+ * resolving the user principal and authorities from its payload.
  * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 1.0.0
  */
 public class JwtAuthorizationProvider implements AuthenticationProvider {
 	
@@ -39,17 +40,21 @@ public class JwtAuthorizationProvider implements AuthenticationProvider {
     private boolean checkExpiry = false;
     private boolean checkPrincipal = false;
     
+    /**
+     * Create a new provider backed by the given {@link JwtPayloadRepository}.
+     * @param payloadRepository the repository used to verify tokens and resolve their payload
+     */
     public JwtAuthorizationProvider(final JwtPayloadRepository payloadRepository) {
         this.payloadRepository = payloadRepository;
     }
 
     /**
-     * 
-     * <p>完成匹配Token的认证，这里返回的对象最终会通过：SecurityContextHolder.getContext().setAuthentication(authResult); 放置在上下文中</p>
-     * @author [@Loong Wan](https://github.com/loong10k)
-     * @param authentication  {@link JwtAuthenticationToken} 对象
-     * @return 认证结果{@link JwtAuthenticationToken}对象
-     * @throws AuthenticationException 认证失败会抛出异常
+     * Authenticate the supplied {@link JwtAuthorizationToken}. The returned token is what is
+     * ultimately stored on the {@code SecurityContextHolder} via
+     * {@code SecurityContextHolder.getContext().setAuthentication(authResult)}.
+     * @param authentication the {@link JwtAuthorizationToken} to authenticate
+     * @return the authenticated {@link JwtAuthorizationToken}
+     * @throws AuthenticationException if authentication fails
      */
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -75,7 +80,7 @@ public class JwtAuthorizationProvider implements AuthenticationProvider {
 			throw new AuthenticationJwtExpiredException("Token Expired");
 		}
 		
-		// 解析Token载体信息
+		// 解析Token载体info
 		JwtPayload payload = getPayloadRepository().getPayload(jwtToken, checkExpiry);
 
 		// 检查token有效性
@@ -85,11 +90,11 @@ public class JwtAuthorizationProvider implements AuthenticationProvider {
 		
 		Set<GrantedAuthority> grantedAuthorities = new HashSet<GrantedAuthority>();
 		
-		// 角色必须是ROLE_开头，可以在数据库中设置
+		// 角色必须是ROLE_开头，可以在数据库中sets
         GrantedAuthority grantedAuthority = new SimpleGrantedAuthority("ROLE_"+ payload.getRkey());
         grantedAuthorities.add(grantedAuthority);
    		
-   		// 用户权限标记集合
+   		// userpermission标记集合
    		Set<String> perms = payload.getPerms();
 		for (String perm : perms ) {
 			GrantedAuthority authority = new SimpleGrantedAuthority(perm);

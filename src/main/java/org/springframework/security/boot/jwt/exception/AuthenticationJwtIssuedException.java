@@ -3,6 +3,11 @@ package org.springframework.security.boot.jwt.exception;
 import org.springframework.security.boot.biz.exception.AuthResponseCode;
 import org.springframework.security.boot.biz.exception.AuthenticationExceptionAdapter;
 
+/**
+ * Thrown when a fresh JWT has just been issued (for example, during token refresh).
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 1.0.0
+ */
 @SuppressWarnings("serial")
 public class AuthenticationJwtIssuedException extends AuthenticationExceptionAdapter {
 

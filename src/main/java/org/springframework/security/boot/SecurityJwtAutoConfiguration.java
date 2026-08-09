@@ -10,6 +10,12 @@ import org.springframework.security.boot.jwt.authentication.JwtMatchedAuthcOrAut
 import org.springframework.security.boot.jwt.authentication.JwtMatchedAuthenticationEntryPoint;
 import org.springframework.security.boot.jwt.authentication.JwtMatchedAuthenticationSuccessHandler;
 
+/**
+ * SecurityJwtAutoConfiguration.
+ *
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 1.0.0
+ */
 @Configuration
 @AutoConfigureBefore(name = {
 		"org.springframework.boot.security.autoconfigure.web.servlet.SecurityFilterAutoConfiguration"

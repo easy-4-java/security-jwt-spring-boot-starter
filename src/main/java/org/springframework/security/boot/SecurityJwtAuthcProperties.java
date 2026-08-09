@@ -26,6 +26,12 @@ import org.springframework.security.boot.biz.property.SecurityHeaderCsrfProperti
 import org.springframework.security.boot.biz.property.SecurityLogoutProperties;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+/**
+ * SecurityJwtAuthcProperties.
+ *
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 1.0.0
+ */
 @ConfigurationProperties(prefix = SecurityJwtAuthcProperties.PREFIX)
 @Getter
 @Setter

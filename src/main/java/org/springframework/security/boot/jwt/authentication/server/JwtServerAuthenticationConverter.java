@@ -14,8 +14,11 @@ import reactor.core.publisher.Mono;
 import java.util.Objects;
 
 /**
- * 2、JWT Authentication Converter For Reactive  （负责提取Token）
+ * Reactive {@link ServerAuthenticationConverter} that extracts the JWT (and associated
+ * headers) from an incoming request and builds a {@code JwtAuthorizationToken} for the
+ * authentication manager to verify.
  * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 1.0.0
  */
 public class JwtServerAuthenticationConverter implements ServerAuthenticationConverter {
 	
@@ -57,9 +60,9 @@ public class JwtServerAuthenticationConverter implements ServerAuthenticationCon
 	@Override
 	public Mono<Authentication> convert(ServerWebExchange exchange) {
 		ServerHttpRequest request = exchange.getRequest();
-		// 1、从请求中提取token
+		// 1、从request中提取token
 		return Mono.justOrEmpty(this.obtainToken(request))
-				// 2、没有获取到，则抛出异常
+				// 2、没有gets到，则抛出exception
 				.switchIfEmpty(Mono.defer(() -> Mono.error(new AuthenticationJwtNotFoundException("Token not provided"))))
 				// 3、构造 JwtAuthorizationToken
 				.flatMap( token -> {
@@ -89,14 +92,14 @@ public class JwtServerAuthenticationConverter implements ServerAuthenticationCon
 	}
 	
 	protected String obtainToken(ServerHttpRequest request) {
-		// 从header中获取token
+		// 从header中getstoken
 		String token = request.getHeaders().getFirst(getAuthorizationHeaderName());
-		// 如果header中不存在token，则从参数中获取token
+		// 如果header中不存在token，则从参数中getstoken
 		if (StringUtils.isEmpty(token)) {
 			return request.getQueryParams().getFirst(getAuthorizationParamName());
 		}
 		if (StringUtils.isEmpty(token)) {
-			// 从 cookie 获取 token
+			// 从 cookie gets token
 			MultiValueMap<String, HttpCookie> cookies = request.getCookies();
 			if (null == cookies || cookies.size() == 0) {
 				return null;

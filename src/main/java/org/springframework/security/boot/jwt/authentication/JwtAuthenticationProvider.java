@@ -18,8 +18,9 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 /**
- * Jwt认证 (authentication)处理器
+ * Authentication provider for username/password login requests that produce a JWT.
  * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 1.0.0
  */
 public class JwtAuthenticationProvider implements AuthenticationProvider {
 	
@@ -29,18 +30,23 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
     private final UserDetailsServiceAdapter userDetailsService;
     private UserDetailsChecker userDetailsChecker = new AccountStatusUserDetailsChecker();
     
+    /**
+     * Create a new provider backed by the given user-details service and password encoder.
+     * @param userDetailsService the service used to load user details
+     * @param passwordEncoder the encoder used to verify the supplied password
+     */
     public JwtAuthenticationProvider(final UserDetailsServiceAdapter userDetailsService, final PasswordEncoder passwordEncoder) {
         this.userDetailsService = userDetailsService;
         this.passwordEncoder = passwordEncoder;
     }
 
     /**
-     * 
-     * <p>完成匹配Token的认证，这里返回的对象最终会通过：SecurityContextHolder.getContext().setAuthentication(authResult); 放置在上下文中</p>
-     * @author [@Loong Wan](https://github.com/loong10k)
-     * @param authentication  {@link JwtAuthenticationToken} 对象
-     * @return 认证结果{@link JwtAuthenticationToken}对象
-     * @throws AuthenticationException 认证失败会抛出异常
+     * Authenticate the supplied {@link JwtAuthenticationToken}. The returned token is what is
+     * ultimately stored on the {@code SecurityContextHolder} via
+     * {@code SecurityContextHolder.getContext().setAuthentication(authResult)}.
+     * @param authentication the {@link JwtAuthenticationToken} to authenticate
+     * @return the authenticated {@link JwtAuthenticationToken}
+     * @throws AuthenticationException if authentication fails
      */
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
