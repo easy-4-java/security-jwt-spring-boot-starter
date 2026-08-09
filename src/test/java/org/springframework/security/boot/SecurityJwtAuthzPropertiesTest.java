@@ -102,19 +102,16 @@ class SecurityJwtAuthzPropertiesTest {
     }
 
     @Test
-    @DisplayName("Field 'ignorePatterns' can be set and read")
+    @DisplayName("Field 'ignorePatterns' getter/setter round-trip")
     void testIgnorePatternsField() {
         SecurityJwtAuthzProperties props = new SecurityJwtAuthzProperties();
-        // Use reflection to set private field (covers all fields including those without setters)
-        try {
-            java.lang.reflect.Field f = SecurityJwtAuthzProperties.class.getDeclaredField("ignorePatterns");
-            f.setAccessible(true);
-            f.set(props, null);
-            Object value = f.get(props);
-            assertThat(value).isNotNull();
-        } catch (Exception e) {
-            // Field may have a more complex type; skip silently
-        }
+        // Default should be non-null
+        assertThat(props.getIgnorePatterns()).isNotNull();
+        assertThat(props.getIgnorePatterns()).isNotEmpty();
+        // Set via setter and verify via getter
+        String[] patterns = new String[] {"/api/**", "/public/**"};
+        props.setIgnorePatterns(patterns);
+        assertThat(props.getIgnorePatterns()).containsExactly("/api/**", "/public/**");
     }
 
     @Test

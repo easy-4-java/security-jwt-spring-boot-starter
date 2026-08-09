@@ -17,8 +17,12 @@ package org.springframework.security.boot.jwt.authentication;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
  * Unit tests for {{ @link JwtAuthenticationToken }}.
@@ -30,9 +34,62 @@ import static org.assertj.core.api.Assertions.assertThat;
 class JwtAuthenticationTokenTest {
 
     @Test
-    @DisplayName("Instance can be created via constructor")
-    void testInstantiation() {
-        JwtAuthenticationToken instance = new JwtAuthenticationToken(null, null);
-        assertThat(instance).isNotNull();
+    @DisplayName("Unauthenticated token stores principal and credentials")
+    void testUnauthenticatedConstructor() {
+        JwtAuthenticationToken token = new JwtAuthenticationToken("user", "pass");
+        assertThat(token).isNotNull();
+        assertThat(token.getPrincipal()).isEqualTo("user");
+        assertThat(token.getCredentials()).isEqualTo("pass");
+        assertThat(token.isAuthenticated()).isFalse();
+        assertThat(token.getAuthorities()).isEmpty();
+    }
+
+    @Test
+    @DisplayName("Authenticated token stores principal, credentials and authorities")
+    void testAuthenticatedConstructor() {
+        SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_ADMIN");
+        JwtAuthenticationToken token = new JwtAuthenticationToken("user", "pass",
+                Collections.singletonList(authority));
+        assertThat(token.getPrincipal()).isEqualTo("user");
+        assertThat(token.getCredentials()).isEqualTo("pass");
+        assertThat(token.isAuthenticated()).isTrue();
+        assertThat(token.getAuthorities()).containsExactly(authority);
+    }
+
+    @Test
+    @DisplayName("setAuthenticated(true) throws IllegalArgumentException")
+    void testSetAuthenticatedTrueThrows() {
+        JwtAuthenticationToken token = new JwtAuthenticationToken("user", "pass");
+        assertThatThrownBy(() -> token.setAuthenticated(true))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    @DisplayName("setAuthenticated(false) works")
+    void testSetAuthenticatedFalse() {
+        JwtAuthenticationToken token = new JwtAuthenticationToken("user", "pass");
+        token.setAuthenticated(false);
+        assertThat(token.isAuthenticated()).isFalse();
+    }
+
+    @Test
+    @DisplayName("eraseCredentials nulls credentials but keeps principal")
+    void testEraseCredentials() {
+        JwtAuthenticationToken token = new JwtAuthenticationToken("user", "pass");
+        token.eraseCredentials();
+        assertThat(token.getCredentials()).isNull();
+        assertThat(token.getPrincipal()).isEqualTo("user");
+    }
+
+    @Test
+    @DisplayName("Sign, longitude and latitude getters/setters round-trip")
+    void testGeoFields() {
+        JwtAuthenticationToken token = new JwtAuthenticationToken("user", "pass");
+        token.setSign("abc123");
+        token.setLongitude(116.4);
+        token.setLatitude(39.9);
+        assertThat(token.getSign()).isEqualTo("abc123");
+        assertThat(token.getLongitude()).isEqualTo(116.4);
+        assertThat(token.getLatitude()).isEqualTo(39.9);
     }
 }

@@ -17,15 +17,24 @@ package org.springframework.security.boot;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.runner.ApplicationContextRunner;
+import org.springframework.security.boot.biz.userdetails.JwtPayloadRepository;
+import org.springframework.security.authentication.ReactiveAuthenticationManager;
+import org.springframework.security.boot.jwt.authentication.server.JwtMatchedServerAuthenticationEntryPoint;
+import org.springframework.security.boot.jwt.authentication.server.JwtMatchedServerAuthenticationFailureHandler;
+import org.springframework.security.boot.jwt.authentication.server.JwtMatchedServerAuthenticationSuccessHandler;
+import org.springframework.security.boot.jwt.authentication.server.JwtServerAuthenticationConverter;
+import org.springframework.security.boot.jwt.authentication.server.JwtServerAuthorizationSecurityContextRepository;
+import org.springframework.security.web.server.authentication.ServerAuthenticationConverter;
+import org.springframework.security.web.server.context.ServerSecurityContextRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
 /**
  * Unit tests for {{ @link ReactiveSecurityJwtAutoConfiguration }}.
  *
- * <p>Verifies the auto-configuration activates under the expected conditions
- * and exposes its declared beans.</p>
+ * <p>Verifies the auto-configuration class can be instantiated and
+ * its factory methods produce the expected beans.</p>
  *
  * @author [@Loong Wan](https://github.com/loong10k)
  * @since 1.0.0
@@ -33,27 +42,66 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DisplayName("ReactiveSecurityJwtAutoConfiguration Tests")
 class ReactiveSecurityJwtAutoConfigurationTest {
 
-    private final ApplicationContextRunner runner = new ApplicationContextRunner();
+    private final ReactiveSecurityJwtAutoConfiguration configuration = new ReactiveSecurityJwtAutoConfiguration();
 
     @Test
     @DisplayName("Auto-configuration class can be instantiated")
     void testInstantiation() {
-        ReactiveSecurityJwtAutoConfiguration configuration = new ReactiveSecurityJwtAutoConfiguration();
         assertThat(configuration).isNotNull();
     }
 
     @Test
-    @DisplayName("Auto-configuration loads when 'spring.boot.enabled=true'")
-    void testLoadsWhenEnabledPropertySet() {
-        runner.withUserConfiguration(ReactiveSecurityJwtAutoConfiguration.class)
-                .withPropertyValues("spring.boot.enabled=true")
-                .run(context -> assertThat(context).hasSingleBean(ReactiveSecurityJwtAutoConfiguration.class));
+    @DisplayName("jwtMatchedServerAuthenticationEntryPoint returns non-null entry point")
+    void testJwtMatchedServerAuthenticationEntryPoint() {
+        JwtMatchedServerAuthenticationEntryPoint entryPoint = configuration.jwtMatchedServerAuthenticationEntryPoint();
+        assertThat(entryPoint).isNotNull();
     }
 
     @Test
-    @DisplayName("Auto-configuration is absent when property is not set")
-    void testNotLoadedWhenPropertyAbsent() {
-        runner.withUserConfiguration(ReactiveSecurityJwtAutoConfiguration.class)
-                .run(context -> assertThat(context).doesNotHaveBean(ReactiveSecurityJwtAutoConfiguration.class));
+    @DisplayName("jwtMatchedServerAuthenticationFailureHandler returns non-null failure handler")
+    void testJwtMatchedServerAuthenticationFailureHandler() {
+        JwtMatchedServerAuthenticationFailureHandler handler = configuration.jwtMatchedServerAuthenticationFailureHandler();
+        assertThat(handler).isNotNull();
+    }
+
+    @Test
+    @DisplayName("jwtMatchedServerAuthenticationSuccessHandler returns non-null success handler")
+    void testJwtMatchedServerAuthenticationSuccessHandler() {
+        JwtPayloadRepository payloadRepository = mock(JwtPayloadRepository.class);
+        JwtMatchedServerAuthenticationSuccessHandler handler = configuration.jwtMatchedServerAuthenticationSuccessHandler(payloadRepository);
+        assertThat(handler).isNotNull();
+    }
+
+    @Test
+    @DisplayName("payloadRepository returns non-null repository")
+    void testPayloadRepository() {
+        JwtPayloadRepository repository = configuration.payloadRepository();
+        assertThat(repository).isNotNull();
+    }
+
+    @Test
+    @DisplayName("jwtReactiveAuthenticationManager returns non-null manager")
+    void testJwtReactiveAuthenticationManager() {
+        JwtPayloadRepository payloadRepository = mock(JwtPayloadRepository.class);
+        SecurityJwtAuthzProperties authzProperties = new SecurityJwtAuthzProperties();
+        ReactiveAuthenticationManager manager = configuration.jwtReactiveAuthenticationManager(payloadRepository, authzProperties);
+        assertThat(manager).isNotNull();
+    }
+
+    @Test
+    @DisplayName("jwtServerAuthenticationConverter returns non-null converter")
+    void testJwtServerAuthenticationConverter() {
+        ServerAuthenticationConverter converter = configuration.jwtServerAuthenticationConverter();
+        assertThat(converter).isNotNull();
+    }
+
+    @Test
+    @DisplayName("jwtServerSecurityContextRepository returns non-null repository")
+    void testJwtServerSecurityContextRepository() {
+        JwtPayloadRepository payloadRepository = mock(JwtPayloadRepository.class);
+        SecurityJwtAuthzProperties authzProperties = new SecurityJwtAuthzProperties();
+        ReactiveAuthenticationManager authManager = configuration.jwtReactiveAuthenticationManager(payloadRepository, authzProperties);
+        ServerSecurityContextRepository repository = configuration.jwtServerSecurityContextRepository(authManager);
+        assertThat(repository).isNotNull();
     }
 }

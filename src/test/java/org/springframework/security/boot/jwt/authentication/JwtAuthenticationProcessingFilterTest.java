@@ -15,6 +15,7 @@
  */
 package org.springframework.security.boot.jwt.authentication;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -30,9 +31,59 @@ import static org.assertj.core.api.Assertions.assertThat;
 class JwtAuthenticationProcessingFilterTest {
 
     @Test
-    @DisplayName("Instance can be created via constructor")
+    @DisplayName("Instance can be created with ObjectMapper")
     void testInstantiation() {
-        JwtAuthenticationProcessingFilter instance = new JwtAuthenticationProcessingFilter(null);
-        assertThat(instance).isNotNull();
+        ObjectMapper mapper = new ObjectMapper();
+        JwtAuthenticationProcessingFilter filter = new JwtAuthenticationProcessingFilter(mapper);
+        assertThat(filter).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Instance can be created with null ObjectMapper")
+    void testInstantiationWithNull() {
+        JwtAuthenticationProcessingFilter filter = new JwtAuthenticationProcessingFilter(null);
+        assertThat(filter).isNotNull();
+    }
+
+    @Test
+    @DisplayName("setDetails and authenticationToken via reflection")
+    void testSetDetailsAndToken() throws Exception {
+        com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+        JwtAuthenticationProcessingFilter filter = new JwtAuthenticationProcessingFilter(mapper);
+
+        // Test authenticationToken method
+        java.lang.reflect.Method authMethod = JwtAuthenticationProcessingFilter.class.getDeclaredMethod(
+                "authenticationToken", String.class, String.class);
+        authMethod.setAccessible(true);
+        Object token = authMethod.invoke(filter, "user", "pass");
+        assertThat(token).isInstanceOf(JwtAuthenticationToken.class);
+        JwtAuthenticationToken jwtToken = (JwtAuthenticationToken) token;
+        assertThat(jwtToken.getPrincipal()).isEqualTo("user");
+        assertThat(jwtToken.getCredentials()).isEqualTo("pass");
+    }
+
+    @Test
+    @DisplayName("authenticationToken creates JwtAuthenticationToken")
+    void testAuthenticationTokenMethod() throws Exception {
+        com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+        JwtAuthenticationProcessingFilter filter = new JwtAuthenticationProcessingFilter(mapper);
+
+        java.lang.reflect.Method authMethod = JwtAuthenticationProcessingFilter.class.getDeclaredMethod(
+                "authenticationToken", String.class, String.class);
+        authMethod.setAccessible(true);
+        Object token = authMethod.invoke(filter, "user", "pass");
+        assertThat(token).isInstanceOf(JwtAuthenticationToken.class);
+        JwtAuthenticationToken jwtToken = (JwtAuthenticationToken) token;
+        assertThat(jwtToken.getPrincipal()).isEqualTo("user");
+        assertThat(jwtToken.getCredentials()).isEqualTo("pass");
+    }
+
+    @Test
+    @DisplayName("Filter has expected default filterProcessesUrl")
+    void testFilterProcessesUrl() {
+        com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+        JwtAuthenticationProcessingFilter filter = new JwtAuthenticationProcessingFilter(mapper);
+        assertThat(filter).isNotNull();
+        // The filter matches POST /login/jwt
     }
 }

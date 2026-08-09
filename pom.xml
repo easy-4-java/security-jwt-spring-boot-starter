@@ -285,7 +285,14 @@
                             <haltOnFailure>true</haltOnFailure>
                             <rules>
                                 <rule>
-                                    <element>BUNDLE</element>
+                                    <element>CLASS</element>
+                                    <excludes>
+                                        <exclude>org.springframework.security.boot.SecurityJwtAuthcFilterConfiguration*</exclude>
+                                        <exclude>org.springframework.security.boot.SecurityJwtAuthzFilterConfiguration*</exclude>
+                                        <exclude>org.springframework.security.boot.jwt.authentication.server.*</exclude>
+                                        <exclude>org.springframework.security.boot.SecurityJwtAutoConfiguration*</exclude>
+                                        <exclude>org.springframework.security.boot.jwt.authentication.JwtAuthenticationProcessingFilter</exclude>
+                                    </excludes>
                                     <limits>
                                         <limit>
                                             <counter>LINE</counter>

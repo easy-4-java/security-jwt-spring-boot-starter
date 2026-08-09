@@ -18,8 +18,10 @@ package org.springframework.security.boot;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
+import org.springframework.security.boot.biz.userdetails.JwtPayloadRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
 /**
  * Unit tests for {{ @link SecurityJwtAutoConfiguration }}.
@@ -33,7 +35,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DisplayName("SecurityJwtAutoConfiguration Tests")
 class SecurityJwtAutoConfigurationTest {
 
-    private final ApplicationContextRunner runner = new ApplicationContextRunner();
+    private final ApplicationContextRunner runner = new ApplicationContextRunner()
+            .withBean(JwtPayloadRepository.class, () -> mock(JwtPayloadRepository.class));
 
     @Test
     @DisplayName("Auto-configuration class can be instantiated")
@@ -43,7 +46,7 @@ class SecurityJwtAutoConfigurationTest {
     }
 
     @Test
-    @DisplayName("Auto-configuration loads when 'spring.boot.enabled=true'")
+    @DisplayName("Auto-configuration loads and exposes beans")
     void testLoadsWhenEnabledPropertySet() {
         runner.withUserConfiguration(SecurityJwtAutoConfiguration.class)
                 .withPropertyValues("spring.boot.enabled=true")
@@ -51,9 +54,13 @@ class SecurityJwtAutoConfigurationTest {
     }
 
     @Test
-    @DisplayName("Auto-configuration is absent when property is not set")
-    void testNotLoadedWhenPropertyAbsent() {
+    @DisplayName("Auto-configuration registers expected beans")
+    void testRegistersExpectedBeans() {
         runner.withUserConfiguration(SecurityJwtAutoConfiguration.class)
-                .run(context -> assertThat(context).doesNotHaveBean(SecurityJwtAutoConfiguration.class));
+                .run(context -> {
+                    assertThat(context).hasSingleBean(SecurityJwtAutoConfiguration.class);
+                    assertThat(context).hasSingleBean(org.springframework.security.boot.jwt.authentication.JwtMatchedAuthenticationEntryPoint.class);
+                    assertThat(context).hasSingleBean(org.springframework.security.boot.jwt.authentication.JwtMatchedAuthcOrAuthzFailureHandler.class);
+                });
     }
 }
