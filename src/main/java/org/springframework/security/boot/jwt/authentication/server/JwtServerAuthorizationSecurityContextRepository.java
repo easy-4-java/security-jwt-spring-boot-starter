@@ -24,7 +24,7 @@ import java.util.stream.Stream;
  * 1、JWT Authorization Security Context Repository For Reactive （负责提取Token，构造 SecurityContext 对象）
  * https://www.jianshu.com/p/e013ca21d91d
  * https://www.baeldung.com/spring-oauth-login-webflux
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  */
 public class JwtServerAuthorizationSecurityContextRepository implements ServerSecurityContextRepository {
 	
