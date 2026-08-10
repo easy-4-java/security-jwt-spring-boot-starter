@@ -7,7 +7,7 @@ import java.util.Collection;
 
 /**
  * Jwt授权 (authorization) Token
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  */
 @SuppressWarnings("serial")
 public class JwtAuthorizationToken extends AbstractAuthenticationToken {
