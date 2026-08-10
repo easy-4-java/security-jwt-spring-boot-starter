@@ -15,7 +15,7 @@ import java.util.Objects;
 
 /**
  * 2、JWT Authentication Converter For Reactive  （负责提取Token）
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  */
 public class JwtServerAuthenticationConverter implements ServerAuthenticationConverter {
 	
