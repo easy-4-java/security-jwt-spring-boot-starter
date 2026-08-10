@@ -19,7 +19,7 @@ import org.springframework.util.StringUtils;
 
 /**
  * Authentication provider for username/password login requests that produce a JWT.
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.0
  */
 public class JwtAuthenticationProvider implements AuthenticationProvider {

@@ -17,7 +17,7 @@ import java.util.Objects;
  * Reactive {@link ServerAuthenticationConverter} that extracts the JWT (and associated
  * headers) from an incoming request and builds a {@code JwtAuthorizationToken} for the
  * authentication manager to verify.
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.0
  */
 public class JwtServerAuthenticationConverter implements ServerAuthenticationConverter {

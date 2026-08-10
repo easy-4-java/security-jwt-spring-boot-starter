@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2018, hiwepy (https://github.com/hiwepy).
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.0
  */
 package org.springframework.security.boot.jwt.authentication;

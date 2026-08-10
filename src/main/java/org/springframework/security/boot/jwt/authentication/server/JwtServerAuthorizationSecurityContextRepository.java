@@ -24,7 +24,7 @@ import java.util.stream.Stream;
  * Reactive {@link ServerSecurityContextRepository} that extracts the JWT from the incoming
  * request, uses the {@code ReactiveAuthenticationManager} to build an
  * {@code Authentication}, and stores the result in a {@code SecurityContext}.
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.0
  */
 public class JwtServerAuthorizationSecurityContextRepository implements ServerSecurityContextRepository {

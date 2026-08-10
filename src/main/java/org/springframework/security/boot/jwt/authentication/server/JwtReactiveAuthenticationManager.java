@@ -45,7 +45,7 @@ import java.util.Set;
 /**
  * Reactive {@link ReactiveAuthenticationManager} that verifies the supplied JWT and builds an
  * authenticated {@link Authentication} from its payload.
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.0
  */
 public class JwtReactiveAuthenticationManager implements ReactiveAuthenticationManager  {

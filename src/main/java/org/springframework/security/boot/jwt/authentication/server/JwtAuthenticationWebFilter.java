@@ -21,7 +21,7 @@ import org.springframework.security.web.server.authentication.AuthenticationWebF
 /**
  * Reactive {@link AuthenticationWebFilter} that intercepts requests and authenticates them
  * using the supplied {@link ReactiveAuthenticationManager}.
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.0
  */
 public class JwtAuthenticationWebFilter extends AuthenticationWebFilter {

@@ -47,7 +47,7 @@ import java.util.stream.Collectors;
 /**
  * Filter that authorises incoming requests by extracting a JWT from the configured header,
  * request parameter or cookie and feeding it to the {@code AuthenticationManager}.
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.0
  */
 @Slf4j

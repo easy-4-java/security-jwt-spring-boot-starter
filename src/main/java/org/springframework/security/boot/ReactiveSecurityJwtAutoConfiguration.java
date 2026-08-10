@@ -15,7 +15,7 @@ import org.springframework.security.web.server.context.ServerSecurityContextRepo
 /**
  * ReactiveSecurityJwtAutoConfiguration.
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.0
  */
 @Configuration
@@ -63,7 +63,7 @@ public class ReactiveSecurityJwtAutoConfiguration {
 	
 	/**
 	 * 2、JWT Authentication Converter For Reactive  （负责提取Token）
-	 * @author [@Loong Wan](https://github.com/loong10k)
+	 * @author <a href="https://github.com/loong10k">Loong Wan</a>
 	 * @return
 	 */
 	@Bean
@@ -75,7 +75,7 @@ public class ReactiveSecurityJwtAutoConfiguration {
 	 /**
 	  * 3、JWT Authentication Manager For Reactive （负责校验 Authentication 对象）
 	  * TODO
-	  * @author [@Loong Wan](https://github.com/loong10k)
+	  * @author <a href="https://github.com/loong10k">Loong Wan</a>
 	  * @param payloadRepository
 	  * @return
 	  */

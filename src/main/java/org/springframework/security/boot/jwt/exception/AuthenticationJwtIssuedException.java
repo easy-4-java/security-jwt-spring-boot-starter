@@ -5,7 +5,7 @@ import org.springframework.security.boot.biz.exception.AuthenticationExceptionAd
 
 /**
  * Thrown when a fresh JWT has just been issued (for example, during token refresh).
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.0
  */
 @SuppressWarnings("serial")

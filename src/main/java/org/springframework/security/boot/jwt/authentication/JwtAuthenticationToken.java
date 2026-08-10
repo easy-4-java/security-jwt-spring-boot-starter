@@ -22,7 +22,7 @@ import java.util.Collection;
 
 /**
  * Authentication token carrying the username and password submitted during JWT login.
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.0
  */
 @SuppressWarnings("serial")

@@ -8,7 +8,7 @@ import org.springframework.security.core.AuthenticationException;
 /**
  * {@link MatchedAuthenticationFailureHandler} that supports all JWT-related authentication and
  * authorization failure exceptions raised by this starter.
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.0
  */
 public class JwtMatchedAuthcOrAuthzFailureHandler implements MatchedAuthenticationFailureHandler {

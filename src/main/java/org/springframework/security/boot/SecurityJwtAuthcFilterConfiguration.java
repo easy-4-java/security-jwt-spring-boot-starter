@@ -45,7 +45,7 @@ import java.util.stream.Collectors;
  * Servlet auto-configuration that registers the JWT authentication (login) filter chain and
  * its {@link JwtAuthenticationProvider}, active when
  * {@code spring.security.jwt.authc.enabled=true} and the application is a servlet web app.
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.0
  */
 @Configuration

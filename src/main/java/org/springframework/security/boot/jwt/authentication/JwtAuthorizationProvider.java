@@ -28,7 +28,7 @@ import java.util.Set;
 /**
  * Authentication provider that authorises incoming requests by verifying the supplied JWT and
  * resolving the user principal and authorities from its payload.
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.0
  */
 public class JwtAuthorizationProvider implements AuthenticationProvider {

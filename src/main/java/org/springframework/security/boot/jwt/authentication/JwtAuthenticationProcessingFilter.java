@@ -9,7 +9,7 @@ import org.springframework.security.web.servlet.util.matcher.PathPatternRequestM
 
 /**
  * Filter that processes JWT authentication (login) requests submitted via {@code POST /login/jwt}.
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.0
  */
 public class JwtAuthenticationProcessingFilter extends PostRequestAuthenticationProcessingFilter {

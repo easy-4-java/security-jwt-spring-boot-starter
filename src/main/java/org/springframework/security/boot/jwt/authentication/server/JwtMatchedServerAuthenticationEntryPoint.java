@@ -27,7 +27,7 @@ import org.springframework.security.core.AuthenticationException;
 /**
  * Reactive {@link MatchedServerAuthenticationEntryPoint} that supports all JWT-related
  * authentication exceptions raised by this starter.
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.0
  */
 public class JwtMatchedServerAuthenticationEntryPoint implements MatchedServerAuthenticationEntryPoint {

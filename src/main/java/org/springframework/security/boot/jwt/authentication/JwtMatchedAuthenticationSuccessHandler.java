@@ -25,7 +25,7 @@ import java.nio.charset.StandardCharsets;
  * {@link MatchedAuthenticationSuccessHandler} for JWT authentication that serialises the
  * authenticated user profile, together with an {@link AuthResponse}, back to the client as
  * JSON.
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.0
  */
 public class JwtMatchedAuthenticationSuccessHandler implements MatchedAuthenticationSuccessHandler {

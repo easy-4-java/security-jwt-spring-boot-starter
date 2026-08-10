@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * REST controller endpoint placeholder for refreshing an issued JWT.
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.0
  */
 @RestController

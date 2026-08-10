@@ -7,7 +7,7 @@ import java.util.Collection;
 
 /**
  * Authentication token carrying the JWT used to authorise an incoming request.
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.0
  */
 @SuppressWarnings("serial")
