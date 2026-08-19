@@ -86,6 +86,13 @@ public class JwtAuthorizationProcessingFilter extends AuthenticationProcessingFi
 		this.setIgnoreRequestMatcher(ignorePatterns);
 	}
 
+	/**
+	 * Determines whether requires authentication.
+	 *
+	 * @param request the request
+	 * @param response the response
+	 * @return the result
+	 */
 	@Override
 	protected boolean requiresAuthentication(HttpServletRequest request, HttpServletResponse response) {
 		// ignore部分request
@@ -100,6 +107,13 @@ public class JwtAuthorizationProcessingFilter extends AuthenticationProcessingFi
 		return super.requiresAuthentication(request, response);
 	}
 
+	/**
+	 * do Filter.
+	 *
+	 * @param req the req
+	 * @param res the res
+	 * @param chain the chain
+	 */
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
 			throws IOException, ServletException {
@@ -152,6 +166,11 @@ public class JwtAuthorizationProcessingFilter extends AuthenticationProcessingFi
 		
 	}
 	
+	/**
+	 * Sets the session authentication strategy.
+	 *
+	 * @param sessionStrategy the session strategy
+	 */
 	@Override
 	public void setSessionAuthenticationStrategy(
 			SessionAuthenticationStrategy sessionStrategy) {
@@ -159,6 +178,13 @@ public class JwtAuthorizationProcessingFilter extends AuthenticationProcessingFi
 		this.sessionStrategy = sessionStrategy;
 	}
 	
+	/**
+	 * do Attempt Authentication.
+	 *
+	 * @param request the request
+	 * @param response the response
+	 * @return the result
+	 */
 	@Override
 	public Authentication doAttemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws AuthenticationException, IOException, ServletException {
@@ -186,10 +212,22 @@ public class JwtAuthorizationProcessingFilter extends AuthenticationProcessingFi
 		return this.getAuthenticationManager().authenticate(authRequest);
 	}
 
+	/**
+	 * set Details.
+	 *
+	 * @param request the request
+	 * @param authRequest the auth request
+	 */
 	protected void setDetails(HttpServletRequest request, AbstractAuthenticationToken authRequest) {
 		authRequest.setDetails(authenticationDetailsSource.buildDetails(request));
 	}
 
+	/**
+	 * obtain Token.
+	 *
+	 * @param request the request
+	 * @return the result
+	 */
 	protected String obtainToken(HttpServletRequest request) {
 		//	从header中getstoken
 		String token = request.getHeader(getAuthorizationHeaderName());
@@ -223,6 +261,11 @@ public class JwtAuthorizationProcessingFilter extends AuthenticationProcessingFi
 		return token;
 	}
 	
+	/**
+	 * Sets the ignore request matcher.
+	 *
+	 * @param ignorePatterns the ignore patterns
+	 */
 	public void setIgnoreRequestMatcher(List<String> ignorePatterns) {
 		if(!CollectionUtils.isEmpty(ignorePatterns)) {
 			this.ignoreRequestMatchers = ignorePatterns.stream().map(pattern -> {
@@ -231,30 +274,65 @@ public class JwtAuthorizationProcessingFilter extends AuthenticationProcessingFi
 		}
 	}
 	
+	/**
+	 * Sets the ignore request matchers.
+	 *
+	 * @param ignoreRequestMatchers the ignore request matchers
+	 */
 	public void setIgnoreRequestMatchers(RequestMatcher ...ignoreRequestMatchers) {
 		this.ignoreRequestMatchers = Arrays.asList(ignoreRequestMatchers);
 	}
 
+	/**
+	 * Returns the authorization header name.
+	 *
+	 * @return the authorization header name
+	 */
 	public String getAuthorizationHeaderName() {
 		return authorizationHeaderName;
 	}
 
+	/**
+	 * Sets the authorization header name.
+	 *
+	 * @param authorizationHeaderName the authorization header name
+	 */
 	public void setAuthorizationHeaderName(String authorizationHeaderName) {
 		this.authorizationHeaderName = authorizationHeaderName;
 	}
 
+	/**
+	 * Returns the authorization param name.
+	 *
+	 * @return the authorization param name
+	 */
 	public String getAuthorizationParamName() {
 		return authorizationParamName;
 	}
 
+	/**
+	 * Sets the authorization param name.
+	 *
+	 * @param authorizationParamName the authorization param name
+	 */
 	public void setAuthorizationParamName(String authorizationParamName) {
 		this.authorizationParamName = authorizationParamName;
 	}
 
+	/**
+	 * Returns the authorization cookie name.
+	 *
+	 * @return the authorization cookie name
+	 */
 	public String getAuthorizationCookieName() {
 		return authorizationCookieName;
 	}
 
+	/**
+	 * Sets the authorization cookie name.
+	 *
+	 * @param authorizationCookieName the authorization cookie name
+	 */
 	public void setAuthorizationCookieName(String authorizationCookieName) {
 		this.authorizationCookieName = authorizationCookieName;
 	}

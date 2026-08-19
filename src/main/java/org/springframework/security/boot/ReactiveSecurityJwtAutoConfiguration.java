@@ -22,28 +22,55 @@ import org.springframework.security.web.server.context.ServerSecurityContextRepo
 @AutoConfigureBefore(name = {
 		"org.springframework.boot.security.autoconfigure.web.reactive.ReactiveWebSecurityAutoConfiguration"
 })
+/**
+ * <p>Configuration properties.</p>
+ *
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
+ * @since 1.0.0
+ */
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
 @EnableConfigurationProperties({ SecurityBizProperties.class, SecurityJwtAuthcProperties.class, SecurityJwtAuthzProperties.class })
 public class ReactiveSecurityJwtAutoConfiguration {
 
+	/**
+	 * JWT Matched Server Authentication Entry Point.
+	 *
+	 * @return the result
+	 */
 	@Bean
 	@ConditionalOnMissingBean
 	public JwtMatchedServerAuthenticationEntryPoint jwtMatchedServerAuthenticationEntryPoint() {
 		return new JwtMatchedServerAuthenticationEntryPoint();
 	}
 	
+	/**
+	 * JWT Matched Server Authentication Failure Handler.
+	 *
+	 * @return the result
+	 */
 	@Bean
 	@ConditionalOnMissingBean
 	public JwtMatchedServerAuthenticationFailureHandler jwtMatchedServerAuthenticationFailureHandler() {
 		return new JwtMatchedServerAuthenticationFailureHandler();
 	}
 
+	/**
+	 * JWT Matched Server Authentication Success Handler.
+	 *
+	 * @param payloadRepository the payload repository
+	 * @return the result
+	 */
 	@Bean
 	@ConditionalOnMissingBean
 	public JwtMatchedServerAuthenticationSuccessHandler jwtMatchedServerAuthenticationSuccessHandler(JwtPayloadRepository payloadRepository) {
 		return new JwtMatchedServerAuthenticationSuccessHandler(payloadRepository, true);
 	}
 
+	/**
+	 * payload Repository.
+	 *
+	 * @return the result
+	 */
 	@Bean
 	@ConditionalOnMissingBean
 	public JwtPayloadRepository payloadRepository() {
@@ -89,6 +116,18 @@ public class ReactiveSecurityJwtAutoConfiguration {
 	}
 	
 	/* @Bean
+	/**
+	 * spring Security Filter Chain.
+	 *
+	 * @param http the http
+	 * @param authenticationManager the authentication manager
+	 * @param securityContextRepository the security context repository
+	 * @param authenticationConverter the authentication converter
+	 * @param authenticationSuccessHandler the authentication success handler
+	 * @param authenticationFailureHandler the authentication failure handler
+	 * @param logoutHandler the logout handler
+	 * @return the result
+	 */
 	public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http,
 			ReactiveAuthenticationManager authenticationManager,
 			ServerSecurityContextRepository securityContextRepository,

@@ -35,6 +35,12 @@ public class JwtMatchedAuthenticationEntryPoint implements MatchedAuthentication
 	protected MessageSourceAccessor messages = SpringSecurityBizMessageSource.getAccessor();
 	protected Logger logger = LoggerFactory.getLogger(getClass());
 	
+	/**
+	 * Determines whether supports.
+	 *
+	 * @param e the e
+	 * @return the result
+	 */
 	@Override
 	public boolean supports(AuthenticationException e) {
 		return SubjectUtils.isAssignableFrom(e.getClass(), AuthenticationJwtIssuedException.class,

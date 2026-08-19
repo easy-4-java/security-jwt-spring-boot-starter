@@ -20,27 +20,54 @@ import org.springframework.security.boot.jwt.authentication.JwtMatchedAuthentica
 @AutoConfigureBefore(name = {
 		"org.springframework.boot.security.autoconfigure.web.servlet.SecurityFilterAutoConfiguration"
 })
+/**
+ * <p>Configuration properties.</p>
+ *
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
+ * @since 1.0.0
+ */
 @EnableConfigurationProperties({ SecurityBizProperties.class, SecurityJwtAuthcProperties.class })
 public class SecurityJwtAutoConfiguration {
 
+	/**
+	 * JWT Matched Authentication Entry Point.
+	 *
+	 * @return the result
+	 */
 	@Bean
 	@ConditionalOnMissingBean
 	public JwtMatchedAuthenticationEntryPoint jwtMatchedAuthenticationEntryPoint() {
 		return new JwtMatchedAuthenticationEntryPoint();
 	}
 	
+	/**
+	 * JWT Matched Authc Or Authz Failure Handler.
+	 *
+	 * @return the result
+	 */
 	@Bean
 	@ConditionalOnMissingBean
 	public JwtMatchedAuthcOrAuthzFailureHandler jwtMatchedAuthcOrAuthzFailureHandler() {
 		return new JwtMatchedAuthcOrAuthzFailureHandler();
 	}
 
+	/**
+	 * JWT Matched Authentication Success Handler.
+	 *
+	 * @param payloadRepository the payload repository
+	 * @return the result
+	 */
 	@Bean
 	@ConditionalOnMissingBean
 	public JwtMatchedAuthenticationSuccessHandler jwtMatchedAuthenticationSuccessHandler(JwtPayloadRepository payloadRepository) {
 		return new JwtMatchedAuthenticationSuccessHandler(payloadRepository);
 	}
 
+	/**
+	 * payload Repository.
+	 *
+	 * @return the result
+	 */
 	@Bean
 	@ConditionalOnMissingBean
 	public JwtPayloadRepository payloadRepository() {

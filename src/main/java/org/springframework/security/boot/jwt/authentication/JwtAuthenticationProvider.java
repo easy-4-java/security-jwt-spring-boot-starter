@@ -94,23 +94,49 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
         return authenticationToken;
     }
 
+    /**
+     * Determines whether supports.
+     *
+     * @param authentication the authentication
+     * @return the result
+     */
     @Override
     public boolean supports(Class<?> authentication) {
         return (JwtAuthenticationToken.class.isAssignableFrom(authentication));
     }
     
+    /**
+     * Sets the user details checker.
+     *
+     * @param userDetailsChecker the user details checker
+     */
     public void setUserDetailsChecker(UserDetailsChecker userDetailsChecker) {
 		this.userDetailsChecker = userDetailsChecker;
 	}
 
+	/**
+	 * Returns the user details checker.
+	 *
+	 * @return the user details checker
+	 */
 	public UserDetailsChecker getUserDetailsChecker() {
 		return userDetailsChecker;
 	}
 
+	/**
+	 * Returns the password encoder.
+	 *
+	 * @return the password encoder
+	 */
 	public PasswordEncoder getPasswordEncoder() {
 		return passwordEncoder;
 	}
 
+	/**
+	 * Returns the user details service.
+	 *
+	 * @return the user details service
+	 */
 	public UserDetailsServiceAdapter getUserDetailsService() {
 		return userDetailsService;
 	}

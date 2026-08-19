@@ -52,6 +52,12 @@ import java.util.stream.Collectors;
 @AutoConfigureBefore(name = {
 		"org.springframework.boot.security.autoconfigure.web.servlet.SecurityFilterAutoConfiguration"
 })
+/**
+ * <p>Configuration properties.</p>
+ *
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
+ * @since 1.0.0
+ */
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @ConditionalOnProperty(prefix = SecurityJwtAuthcProperties.PREFIX, value = "enabled", havingValue = "true")
 @EnableConfigurationProperties({ SecurityBizProperties.class, SecurityJwtAuthcProperties.class })
@@ -205,6 +211,11 @@ public class SecurityJwtAuthcFilterConfiguration {
 			return http.build();
 		}
 
+		/**
+		 * customize.
+		 *
+		 * @param web the web
+		 */
 		@Override
 		public void customize(WebSecurity web) {
 			super.customize(web);

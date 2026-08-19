@@ -68,16 +68,35 @@ public class JwtServerAuthorizationSecurityContextRepository implements ServerSe
 	private String[] whiteList;
 	private AntPathMatcher antPathMatcher = new AntPathMatcher();
 
+	/**
+	 * Constructs a new jwt server authorization security context repository instance.
+	 *
+	 * @param authenticationManager the authentication manager
+	 * @param whiteList the white list
+	 */
 	public JwtServerAuthorizationSecurityContextRepository(ReactiveAuthenticationManager authenticationManager, String... whiteList) {
 		this.authenticationManager = authenticationManager;
 		this.whiteList = whiteList;
 	}
 
+	/**
+	 * save.
+	 *
+	 * @param serverWebExchange the server web exchange
+	 * @param securityContext the security context
+	 * @return the result
+	 */
 	@Override
 	public Mono<Void> save(ServerWebExchange serverWebExchange, SecurityContext securityContext) {
 		return Mono.empty();
 	}
 
+	/**
+	 * load.
+	 *
+	 * @param serverWebExchange the server web exchange
+	 * @return the result
+	 */
 	@Override
 	public Mono<SecurityContext> load(ServerWebExchange serverWebExchange) {
 		ServerHttpRequest request = serverWebExchange.getRequest();
@@ -101,6 +120,13 @@ public class JwtServerAuthorizationSecurityContextRepository implements ServerSe
 				.flatMap(authentication -> onAuthenticationSuccess(authentication, serverWebExchange));
 	}
 	
+	/**
+	 * on Authentication Success.
+	 *
+	 * @param authentication the authentication
+	 * @param exchange the exchange
+	 * @return the result
+	 */
 	protected Mono<SecurityContext> onAuthenticationSuccess(Authentication authentication, ServerWebExchange exchange) {
 		SecurityContextImpl securityContext = new SecurityContextImpl();
 		securityContext.setAuthentication(authentication);
@@ -110,34 +136,79 @@ public class JwtServerAuthorizationSecurityContextRepository implements ServerSe
 			.cast(SecurityContext.class);
 	}
 	
+	/**
+	 * Returns the ant path matcher.
+	 *
+	 * @return the ant path matcher
+	 */
 	public AntPathMatcher getAntPathMatcher() {
 		return antPathMatcher;
 	}
 
+	/**
+	 * Sets the ant path matcher.
+	 *
+	 * @param antPathMatcher the ant path matcher
+	 */
 	public void setAntPathMatcher(AntPathMatcher antPathMatcher) {
 		this.antPathMatcher = antPathMatcher;
 	}
 
+	/**
+	 * Returns the white list.
+	 *
+	 * @return the white list
+	 */
 	public String[] getWhiteList() {
 		return whiteList;
 	}
 
+	/**
+	 * obtain Uid.
+	 *
+	 * @param request the request
+	 * @return the result
+	 */
 	protected String obtainUid(ServerHttpRequest request) {
 		return request.getHeaders().getFirst(getUidHeaderName());
 	}
 
+	/**
+	 * obtain Longitude.
+	 *
+	 * @param request the request
+	 * @return the result
+	 */
 	protected double obtainLongitude(ServerHttpRequest request) {
 		return Double.parseDouble(StringUtils.defaultIfBlank(request.getHeaders().getFirst(getLongitudeHeaderName()), DEFAULT_LONGITUDE_LATITUDE));
 	}
 	
+	/**
+	 * obtain Latitude.
+	 *
+	 * @param request the request
+	 * @return the result
+	 */
 	protected double obtainLatitude(ServerHttpRequest request) {
 		return Double.parseDouble(StringUtils.defaultIfBlank(request.getHeaders().getFirst(getLatitudeHeaderName()), DEFAULT_LONGITUDE_LATITUDE));
 	}
 	
+	/**
+	 * obtain Sign.
+	 *
+	 * @param request the request
+	 * @return the result
+	 */
 	protected String obtainSign(ServerHttpRequest request) {
 		return request.getHeaders().getFirst(getSignHeaderName());
 	}
 	
+	/**
+	 * obtain Token.
+	 *
+	 * @param request the request
+	 * @return the result
+	 */
 	protected String obtainToken(ServerHttpRequest request) {
 		// 从header中getstoken
 		String token = request.getHeaders().getFirst(getAuthorizationHeaderName());
@@ -162,66 +233,146 @@ public class JwtServerAuthorizationSecurityContextRepository implements ServerSe
 		return token.trim();
 	}
 
+	/**
+	 * Returns the authorization header name.
+	 *
+	 * @return the authorization header name
+	 */
 	public String getAuthorizationHeaderName() {
 		return authorizationHeaderName;
 	}
 
+	/**
+	 * Sets the authorization header name.
+	 *
+	 * @param authorizationHeaderName the authorization header name
+	 */
 	public void setAuthorizationHeaderName(String authorizationHeaderName) {
 		this.authorizationHeaderName = authorizationHeaderName;
 	}
 
+	/**
+	 * Returns the authorization param name.
+	 *
+	 * @return the authorization param name
+	 */
 	public String getAuthorizationParamName() {
 		return authorizationParamName;
 	}
 
+	/**
+	 * Sets the authorization param name.
+	 *
+	 * @param authorizationParamName the authorization param name
+	 */
 	public void setAuthorizationParamName(String authorizationParamName) {
 		this.authorizationParamName = authorizationParamName;
 	}
 
+	/**
+	 * Returns the authorization cookie name.
+	 *
+	 * @return the authorization cookie name
+	 */
 	public String getAuthorizationCookieName() {
 		return authorizationCookieName;
 	}
 
+	/**
+	 * Sets the authorization cookie name.
+	 *
+	 * @param authorizationCookieName the authorization cookie name
+	 */
 	public void setAuthorizationCookieName(String authorizationCookieName) {
 		this.authorizationCookieName = authorizationCookieName;
 	}
 
+	/**
+	 * Returns the uid header name.
+	 *
+	 * @return the uid header name
+	 */
 	public String getUidHeaderName() {
 		return uidHeaderName;
 	}
 
+	/**
+	 * Sets the uid header name.
+	 *
+	 * @param uidHeaderName the uid header name
+	 */
 	public void setUidHeaderName(String uidHeaderName) {
 		this.uidHeaderName = uidHeaderName;
 	}
 
+	/**
+	 * Returns the sign header name.
+	 *
+	 * @return the sign header name
+	 */
 	public String getSignHeaderName() {
 		return signHeaderName;
 	}
 
+	/**
+	 * Sets the sign header name.
+	 *
+	 * @param signHeaderName the sign header name
+	 */
 	public void setSignHeaderName(String signHeaderName) {
 		this.signHeaderName = signHeaderName;
 	}
 
+	/**
+	 * Returns the longitude header name.
+	 *
+	 * @return the longitude header name
+	 */
 	public String getLongitudeHeaderName() {
 		return longitudeHeaderName;
 	}
 
+	/**
+	 * Sets the longitude header name.
+	 *
+	 * @param longitudeHeaderName the longitude header name
+	 */
 	public void setLongitudeHeaderName(String longitudeHeaderName) {
 		this.longitudeHeaderName = longitudeHeaderName;
 	}
 
+	/**
+	 * Returns the latitude header name.
+	 *
+	 * @return the latitude header name
+	 */
 	public String getLatitudeHeaderName() {
 		return latitudeHeaderName;
 	}
 
+	/**
+	 * Sets the latitude header name.
+	 *
+	 * @param latitudeHeaderName the latitude header name
+	 */
 	public void setLatitudeHeaderName(String latitudeHeaderName) {
 		this.latitudeHeaderName = latitudeHeaderName;
 	}
 
+	/**
+	 * Returns the authentication manager.
+	 *
+	 * @return the authentication manager
+	 */
 	public ReactiveAuthenticationManager getAuthenticationManager() {
 		return authenticationManager;
 	}
 
+	/**
+	 * Sets the authentication manager.
+	 *
+	 * @param authenticationManager the authentication manager
+	 */
 	public void setAuthenticationManager(ReactiveAuthenticationManager authenticationManager) {
 		this.authenticationManager = authenticationManager;
 	}

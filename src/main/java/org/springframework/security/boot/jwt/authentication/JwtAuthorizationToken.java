@@ -54,6 +54,11 @@ public class JwtAuthorizationToken extends AbstractAuthenticationToken {
         super.setAuthenticated(true);
     }
 
+    /**
+     * Sets the authenticated.
+     *
+     * @param authenticated the authenticated
+     */
     @Override
     public void setAuthenticated(boolean authenticated) {
         if (authenticated) {
@@ -63,42 +68,86 @@ public class JwtAuthorizationToken extends AbstractAuthenticationToken {
         super.setAuthenticated(false);
     }
 
+    /**
+     * Returns the credentials.
+     *
+     * @return the credentials
+     */
     @Override
     public Object getCredentials() {
         return credentials;
     }
 
+    /**
+     * Returns the principal.
+     *
+     * @return the principal
+     */
     @Override
     public Object getPrincipal() {
         return this.principal;
     }
     
+    /**
+     * erase Credentials.
+     *
+     */
     @Override
     public void eraseCredentials() {        
         super.eraseCredentials();
         this.credentials = null;
     }
 
+	/**
+	 * Returns the sign.
+	 *
+	 * @return the sign
+	 */
 	public String getSign() {
 		return sign;
 	}
 
+	/**
+	 * Sets the sign.
+	 *
+	 * @param sign the sign
+	 */
 	public void setSign(String sign) {
 		this.sign = sign;
 	}
 
+	/**
+	 * Returns the longitude.
+	 *
+	 * @return the longitude
+	 */
 	public double getLongitude() {
 		return longitude;
 	}
 
+	/**
+	 * Sets the longitude.
+	 *
+	 * @param longitude the longitude
+	 */
 	public void setLongitude(double longitude) {
 		this.longitude = longitude;
 	}
 
+	/**
+	 * Returns the latitude.
+	 *
+	 * @return the latitude
+	 */
 	public double getLatitude() {
 		return latitude;
 	}
 
+	/**
+	 * Sets the latitude.
+	 *
+	 * @param latitude the latitude
+	 */
 	public void setLatitude(double latitude) {
 		this.latitude = latitude;
 	}

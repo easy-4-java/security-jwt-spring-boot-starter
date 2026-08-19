@@ -22,6 +22,12 @@ public class JwtAuthenticationProcessingFilter extends PostRequestAuthentication
 		super(objectMapper, PathPatternRequestMatcher.pathPattern(HttpMethod.POST, "/login/jwt"));
 	}
 	
+	/**
+	 * set Details.
+	 *
+	 * @param request the request
+	 * @param authRequest the auth request
+	 */
 	@Override
 	protected void setDetails(HttpServletRequest request, AbstractAuthenticationToken authRequest) {
 		super.setDetails(request, authRequest);
@@ -31,6 +37,13 @@ public class JwtAuthenticationProcessingFilter extends PostRequestAuthentication
 		jwtToken.setSign(this.obtainSign(request));
 	}
 	
+	/**
+	 * authentication Token.
+	 *
+	 * @param username the username
+	 * @param password the password
+	 * @return the result
+	 */
 	@Override
 	protected AbstractAuthenticationToken authenticationToken(String username, String password) {
 		return new JwtAuthenticationToken( username, password);

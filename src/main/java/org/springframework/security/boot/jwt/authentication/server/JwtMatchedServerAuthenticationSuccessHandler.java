@@ -59,11 +59,24 @@ public class JwtMatchedServerAuthenticationSuccessHandler implements MatchedServ
 		this.checkExpiry = checkExpiry;
 	}
 	
+	/**
+	 * Determines whether supports.
+	 *
+	 * @param authentication the authentication
+	 * @return the result
+	 */
 	@Override
 	public boolean supports(Authentication authentication) {
 		return SubjectUtils.isAssignableFrom(authentication.getClass(), JwtAuthenticationToken.class);
 	}
 	
+	/**
+	 * on Authentication Success.
+	 *
+	 * @param webFilterExchange the web filter exchange
+	 * @param authentication the authentication
+	 * @return the result
+	 */
 	@Override
 	public Mono<Void> onAuthenticationSuccess(WebFilterExchange webFilterExchange, Authentication authentication) {
 
@@ -88,18 +101,38 @@ public class JwtMatchedServerAuthenticationSuccessHandler implements MatchedServ
 	}
 	
 
+	/**
+	 * Returns the payload repository.
+	 *
+	 * @return the payload repository
+	 */
 	public JwtPayloadRepository getPayloadRepository() {
 		return payloadRepository;
 	}
 
+	/**
+	 * Sets the payload repository.
+	 *
+	 * @param payloadRepository the payload repository
+	 */
 	public void setPayloadRepository(JwtPayloadRepository payloadRepository) {
 		this.payloadRepository = payloadRepository;
 	}
 
+	/**
+	 * Returns the check expiry.
+	 *
+	 * @return the check expiry
+	 */
 	public boolean isCheckExpiry() {
 		return checkExpiry;
 	}
 
+	/**
+	 * Sets the check expiry.
+	 *
+	 * @param checkExpiry the check expiry
+	 */
 	public void setCheckExpiry(boolean checkExpiry) {
 		this.checkExpiry = checkExpiry;
 	}

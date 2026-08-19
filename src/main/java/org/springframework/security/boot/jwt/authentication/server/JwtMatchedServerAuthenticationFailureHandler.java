@@ -28,6 +28,12 @@ import org.springframework.security.core.AuthenticationException;
  */
 public class JwtMatchedServerAuthenticationFailureHandler implements MatchedServerAuthenticationFailureHandler {
 
+	/**
+	 * Determines whether supports.
+	 *
+	 * @param e the e
+	 * @return the result
+	 */
 	@Override
 	public boolean supports(AuthenticationException e) {
 		return SubjectUtils.isAssignableFrom(e.getClass(), AuthenticationJwtIssuedException.class,

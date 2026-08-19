@@ -133,35 +133,76 @@ public class JwtAuthorizationProvider implements AuthenticationProvider {
         return authenticationToken;
     }
 
+    /**
+     * Determines whether supports.
+     *
+     * @param authentication the authentication
+     * @return the result
+     */
     @Override
     public boolean supports(Class<?> authentication) {
         return (JwtAuthorizationToken.class.isAssignableFrom(authentication));
     }
     
+    /**
+     * Sets the user details checker.
+     *
+     * @param userDetailsChecker the user details checker
+     */
     public void setUserDetailsChecker(UserDetailsChecker userDetailsChecker) {
 		this.userDetailsChecker = userDetailsChecker;
 	}
 
+	/**
+	 * Returns the user details checker.
+	 *
+	 * @return the user details checker
+	 */
 	public UserDetailsChecker getUserDetailsChecker() {
 		return userDetailsChecker;
 	}
 
+	/**
+	 * Returns the payload repository.
+	 *
+	 * @return the payload repository
+	 */
 	public JwtPayloadRepository getPayloadRepository() {
 		return payloadRepository;
 	}
 
+	/**
+	 * Returns the check expiry.
+	 *
+	 * @return the check expiry
+	 */
 	public boolean isCheckExpiry() {
 		return checkExpiry;
 	}
 
+	/**
+	 * Sets the check expiry.
+	 *
+	 * @param checkExpiry the check expiry
+	 */
 	public void setCheckExpiry(boolean checkExpiry) {
 		this.checkExpiry = checkExpiry;
 	}
 
+	/**
+	 * Returns the check principal.
+	 *
+	 * @return the check principal
+	 */
 	public boolean isCheckPrincipal() {
 		return checkPrincipal;
 	}
 
+	/**
+	 * Sets the check principal.
+	 *
+	 * @param checkPrincipal the check principal
+	 */
 	public void setCheckPrincipal(boolean checkPrincipal) {
 		this.checkPrincipal = checkPrincipal;
 	}

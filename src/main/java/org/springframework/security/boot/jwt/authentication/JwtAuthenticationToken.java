@@ -83,14 +83,30 @@ public class JwtAuthenticationToken extends AbstractAuthenticationToken {
 	// ~ Methods
 	// ========================================================================================================
 
+	/**
+	 * Returns the credentials.
+	 *
+	 * @return the credentials
+	 */
 	public Object getCredentials() {
 		return this.credentials;
 	}
 
+	/**
+	 * Returns the principal.
+	 *
+	 * @return the principal
+	 */
 	public Object getPrincipal() {
 		return this.principal;
 	}
 
+	/**
+	 * Sets the authenticated.
+	 *
+	 * @param isAuthenticated the is authenticated
+	 * @throws IllegalArgumentException if an error occurs
+	 */
 	public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
 		if (isAuthenticated) {
 			throw new IllegalArgumentException(
@@ -100,32 +116,66 @@ public class JwtAuthenticationToken extends AbstractAuthenticationToken {
 		super.setAuthenticated(false);
 	}
 
+	/**
+	 * erase Credentials.
+	 *
+	 */
 	@Override
 	public void eraseCredentials() {
 		super.eraseCredentials();
 		credentials = null;
 	}
 	
+	/**
+	 * Returns the sign.
+	 *
+	 * @return the sign
+	 */
 	public String getSign() {
 		return sign;
 	}
 
+	/**
+	 * Sets the sign.
+	 *
+	 * @param sign the sign
+	 */
 	public void setSign(String sign) {
 		this.sign = sign;
 	}
 
+	/**
+	 * Returns the longitude.
+	 *
+	 * @return the longitude
+	 */
 	public double getLongitude() {
 		return longitude;
 	}
 
+	/**
+	 * Sets the longitude.
+	 *
+	 * @param longitude the longitude
+	 */
 	public void setLongitude(double longitude) {
 		this.longitude = longitude;
 	}
 
+	/**
+	 * Returns the latitude.
+	 *
+	 * @return the latitude
+	 */
 	public double getLatitude() {
 		return latitude;
 	}
 
+	/**
+	 * Sets the latitude.
+	 *
+	 * @param latitude the latitude
+	 */
 	public void setLatitude(double latitude) {
 		this.latitude = latitude;
 	}

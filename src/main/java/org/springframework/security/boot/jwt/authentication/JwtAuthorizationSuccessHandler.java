@@ -33,6 +33,15 @@ import java.io.IOException;
  */
 public class JwtAuthorizationSuccessHandler implements AuthenticationSuccessHandler {
 
+	/**
+	 * on Authentication Success.
+	 *
+	 * @param request the request
+	 * @param response the response
+	 * @param authentication the authentication
+	 * @throws IOException if an error occurs
+	 * @throws ServletException if an error occurs
+	 */
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 			Authentication authentication) throws IOException, ServletException {

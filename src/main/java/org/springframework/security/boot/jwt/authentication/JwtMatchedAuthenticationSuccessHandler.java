@@ -42,11 +42,26 @@ public class JwtMatchedAuthenticationSuccessHandler implements MatchedAuthentica
 		this.setPayloadRepository(payloadRepository);
 	}
 
+	/**
+	 * Determines whether supports.
+	 *
+	 * @param authentication the authentication
+	 * @return the result
+	 */
 	@Override
 	public boolean supports(Authentication authentication) {
 		return SubjectUtils.isAssignableFrom(authentication.getClass(), JwtAuthenticationToken.class);
 	}
 
+    /**
+     * on Authentication Success.
+     *
+     * @param request the request
+     * @param response the response
+     * @param authentication the authentication
+     * @throws IOException if an error occurs
+     * @throws ServletException if an error occurs
+     */
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
             Authentication authentication) throws IOException, ServletException {
@@ -63,18 +78,38 @@ public class JwtMatchedAuthenticationSuccessHandler implements MatchedAuthentica
 
     }
 
+	/**
+	 * Returns the payload repository.
+	 *
+	 * @return the payload repository
+	 */
 	public JwtPayloadRepository getPayloadRepository() {
 		return payloadRepository;
 	}
 
+	/**
+	 * Sets the payload repository.
+	 *
+	 * @param payloadRepository the payload repository
+	 */
 	public void setPayloadRepository(JwtPayloadRepository payloadRepository) {
 		this.payloadRepository = payloadRepository;
 	}
 
+	/**
+	 * Returns the check expiry.
+	 *
+	 * @return the check expiry
+	 */
 	public boolean isCheckExpiry() {
 		return checkExpiry;
 	}
 
+	/**
+	 * Sets the check expiry.
+	 *
+	 * @param checkExpiry the check expiry
+	 */
 	public void setCheckExpiry(boolean checkExpiry) {
 		this.checkExpiry = checkExpiry;
 	}

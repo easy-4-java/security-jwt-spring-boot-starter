@@ -53,11 +53,24 @@ import java.util.stream.Collectors;
 @AutoConfigureBefore(name = {
 		"org.springframework.boot.security.autoconfigure.web.servlet.SecurityFilterAutoConfiguration"
 })
+/**
+ * <p>Configuration properties.</p>
+ *
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
+ * @since 1.0.0
+ */
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @ConditionalOnProperty(prefix = SecurityJwtAuthzProperties.PREFIX, value = "enabled", havingValue = "true")
 @EnableConfigurationProperties({ SecurityBizProperties.class, SecurityJwtAuthcProperties.class, SecurityJwtAuthzProperties.class })
 public class SecurityJwtAuthzFilterConfiguration {
 
+	/**
+	 * JWT Authorization Provider.
+	 *
+	 * @param payloadRepository the payload repository
+	 * @param jwtAuthzProperties the jwt authz properties
+	 * @return the result
+	 */
 	@Bean
 	@ConditionalOnMissingBean
 	public JwtAuthorizationProvider jwtAuthorizationProvider(JwtPayloadRepository payloadRepository, SecurityJwtAuthzProperties jwtAuthzProperties) {
@@ -123,6 +136,12 @@ public class SecurityJwtAuthzFilterConfiguration {
    			
 		}
 
+	    /**
+	     * authentication Processing Filter.
+	     *
+	     * @return the result
+	     * @throws Exception if an error occurs
+	     */
 	    public JwtAuthorizationProcessingFilter authenticationProcessingFilter() throws Exception {
 	    	
 	    	JwtAuthorizationProcessingFilter authenticationFilter = new JwtAuthorizationProcessingFilter();
@@ -161,6 +180,13 @@ public class SecurityJwtAuthzFilterConfiguration {
 	        return authenticationFilter;
 	    }
 
+		/**
+		 * JWT Authz Security Filter Chain.
+		 *
+		 * @param http the http
+		 * @return the result
+		 * @throws Exception if an error occurs
+		 */
 		@Bean
 		@Order(Ordered.HIGHEST_PRECEDENCE + 80)
 		public SecurityFilterChain jwtAuthzSecurityFilterChain(HttpSecurity http) throws Exception {
@@ -183,6 +209,11 @@ public class SecurityJwtAuthzFilterConfiguration {
 			return http.build();
 		}
 
+		/**
+		 * customize.
+		 *
+		 * @param web the web
+		 */
 		@Override
 		public void customize(WebSecurity web) {
 			super.customize(web);
