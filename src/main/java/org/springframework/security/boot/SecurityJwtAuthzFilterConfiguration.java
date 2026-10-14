@@ -1,13 +1,13 @@
 package org.springframework.security.boot;
 
 import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.biz.web.servlet.i18n.LocaleContextFilter;
+import org.springframework.extension.web.servlet.i18n.LocaleContextFilter;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityFilterAutoConfiguration;
+import org.springframework.boot.security.autoconfigure.web.servlet.SecurityFilterProperties;
+import org.springframework.boot.security.autoconfigure.web.servlet.SecurityFilterAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.context.properties.PropertyMapper;
 import org.springframework.context.annotation.Bean;
@@ -39,6 +39,7 @@ import org.springframework.security.web.authentication.session.SessionAuthentica
 import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.util.CollectionUtils;
 
+import java.util.Objects;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
@@ -123,7 +124,12 @@ public class SecurityJwtAuthzFilterConfiguration {
 	    	/*
 			 * 批量设置参数
 			 */
-			PropertyMapper map = PropertyMapper.get().alwaysApplyingWhenNonNull();
+			PropertyMapper map = PropertyMapper.get().alwaysApplying(new PropertyMapper.SourceOperator() {
+                @Override
+                public <T> PropertyMapper.Source<T> apply(PropertyMapper.Source<T> source) {
+                    return source.when(Objects::nonNull);
+                }
+            });
 			
 			map.from(getSessionMgtProperties().isAllowSessionCreation()).to(authenticationFilter::setAllowSessionCreation);
 			map.from(authenticationManagerBean()).to(authenticationFilter::setAuthenticationManager);
@@ -155,7 +161,7 @@ public class SecurityJwtAuthzFilterConfiguration {
 	    }
 
 		@Bean
-		@Order(SecurityProperties.DEFAULT_FILTER_ORDER + 80)
+		@Order(SecurityFilterProperties.DEFAULT_FILTER_ORDER + 80)
 		public SecurityFilterChain jwtAuthzSecurityFilterChain(HttpSecurity http) throws Exception {
 
 			http.securityMatcher(authzProperties.getPathPattern())

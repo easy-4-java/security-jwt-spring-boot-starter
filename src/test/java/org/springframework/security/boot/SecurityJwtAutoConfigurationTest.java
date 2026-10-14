@@ -43,17 +43,18 @@ class SecurityJwtAutoConfigurationTest {
     }
 
     @Test
-    @DisplayName("Auto-configuration loads when 'spring.boot.enabled=true'")
+    @DisplayName("Auto-configuration loads when 'security.jwt.enabled=true'")
     void testLoadsWhenEnabledPropertySet() {
         runner.withUserConfiguration(SecurityJwtAutoConfiguration.class)
-                .withPropertyValues("spring.boot.enabled=true")
+                .withPropertyValues("security.jwt.enabled=true")
                 .run(context -> assertThat(context).hasSingleBean(SecurityJwtAutoConfiguration.class));
     }
 
     @Test
-    @DisplayName("Auto-configuration is absent when property is not set")
-    void testNotLoadedWhenPropertyAbsent() {
+    @DisplayName("Auto-configuration is absent when explicitly disabled")
+    void testNotLoadedWhenDisabled() {
         runner.withUserConfiguration(SecurityJwtAutoConfiguration.class)
+                .withPropertyValues("security.jwt.enabled=false")
                 .run(context -> assertThat(context).doesNotHaveBean(SecurityJwtAutoConfiguration.class));
     }
 }
