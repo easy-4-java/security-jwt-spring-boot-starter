@@ -17,6 +17,8 @@ package org.springframework.security.boot.jwt.authentication;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpServletResponse;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -34,5 +36,31 @@ class JwtAuthenticationProcessingFilterTest {
     void testInstantiation() {
         JwtAuthenticationProcessingFilter instance = new JwtAuthenticationProcessingFilter(null);
         assertThat(instance).isNotNull();
+    }
+
+    @Test
+    void onlyPostRequestsToJwtLoginAreMatched() {
+        TestFilter filter = new TestFilter();
+
+        assertThat(filter.matches(request("POST", "/login/jwt"))).isTrue();
+        assertThat(filter.matches(request("GET", "/login/jwt"))).isFalse();
+        assertThat(filter.matches(request("POST", "/login"))).isFalse();
+    }
+
+    private static MockHttpServletRequest request(String method, String path) {
+        MockHttpServletRequest request = new MockHttpServletRequest(method, path);
+        request.setServletPath(path);
+        return request;
+    }
+
+    private static final class TestFilter extends JwtAuthenticationProcessingFilter {
+
+        private TestFilter() {
+            super(null);
+        }
+
+        private boolean matches(MockHttpServletRequest request) {
+            return requiresAuthentication(request, new MockHttpServletResponse());
+        }
     }
 }

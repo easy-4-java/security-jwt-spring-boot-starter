@@ -14,7 +14,7 @@ import org.springframework.security.web.server.context.ServerSecurityContextRepo
 
 @Configuration
 @AutoConfigureBefore(name = {
-		"org.springframework.boot.security.autoconfigure.web.reactive.ReactiveWebSecurityAutoConfiguration"
+		"org.springframework.boot.autoconfigure.security.reactive.ReactiveSecurityAutoConfiguration"
 })
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
 @EnableConfigurationProperties({ SecurityBizProperties.class, SecurityJwtAuthcProperties.class, SecurityJwtAuthzProperties.class })

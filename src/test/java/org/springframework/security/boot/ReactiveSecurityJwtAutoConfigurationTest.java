@@ -18,6 +18,7 @@ package org.springframework.security.boot;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
+import org.springframework.boot.test.context.runner.ReactiveWebApplicationContextRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -33,7 +34,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DisplayName("ReactiveSecurityJwtAutoConfiguration Tests")
 class ReactiveSecurityJwtAutoConfigurationTest {
 
-    private final ApplicationContextRunner runner = new ApplicationContextRunner();
+    private final ReactiveWebApplicationContextRunner runner = new ReactiveWebApplicationContextRunner();
 
     @Test
     @DisplayName("Auto-configuration class can be instantiated")
@@ -43,17 +44,16 @@ class ReactiveSecurityJwtAutoConfigurationTest {
     }
 
     @Test
-    @DisplayName("Auto-configuration loads when 'spring.boot.enabled=true'")
-    void testLoadsWhenEnabledPropertySet() {
+    @DisplayName("Auto-configuration loads in a reactive web application")
+    void testLoadsInReactiveWebApplication() {
         runner.withUserConfiguration(ReactiveSecurityJwtAutoConfiguration.class)
-                .withPropertyValues("spring.boot.enabled=true")
                 .run(context -> assertThat(context).hasSingleBean(ReactiveSecurityJwtAutoConfiguration.class));
     }
 
     @Test
-    @DisplayName("Auto-configuration is absent when property is not set")
-    void testNotLoadedWhenPropertyAbsent() {
-        runner.withUserConfiguration(ReactiveSecurityJwtAutoConfiguration.class)
+    @DisplayName("Auto-configuration is absent outside a reactive web application")
+    void testNotLoadedInPlainApplication() {
+        new ApplicationContextRunner().withUserConfiguration(ReactiveSecurityJwtAutoConfiguration.class)
                 .run(context -> assertThat(context).doesNotHaveBean(ReactiveSecurityJwtAutoConfiguration.class));
     }
 }
