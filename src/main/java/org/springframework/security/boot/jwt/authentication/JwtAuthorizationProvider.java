@@ -21,8 +21,10 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsChecker;
 import org.springframework.util.Assert;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -116,7 +118,7 @@ public class JwtAuthorizationProvider implements AuthenticationProvider {
 		principal.setPerms(new HashSet<String>(perms));
 		principal.setRid(payload.getRid());
 		principal.setRkey(payload.getRkey());
-		principal.setRoles(payload.getRoles());
+		principal.setRoles(Objects.isNull(payload.getRoles()) ? null : new ArrayList<Object>(payload.getRoles()));
 		principal.setBound(payload.isBound());
 		principal.setInitial(payload.isInitial());
 		principal.setProfile(payload.getProfile());

@@ -15,7 +15,7 @@
  */
 package org.springframework.security.boot.jwt.authentication;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -48,7 +48,7 @@ class JwtAuthenticationProcessingFilterTest {
     @Test
     @DisplayName("setDetails and authenticationToken via reflection")
     void testSetDetailsAndToken() throws Exception {
-        com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+        tools.jackson.databind.ObjectMapper mapper = new tools.jackson.databind.ObjectMapper();
         JwtAuthenticationProcessingFilter filter = new JwtAuthenticationProcessingFilter(mapper);
 
         // Test authenticationToken method
@@ -65,7 +65,7 @@ class JwtAuthenticationProcessingFilterTest {
     @Test
     @DisplayName("authenticationToken creates JwtAuthenticationToken")
     void testAuthenticationTokenMethod() throws Exception {
-        com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+        tools.jackson.databind.ObjectMapper mapper = new tools.jackson.databind.ObjectMapper();
         JwtAuthenticationProcessingFilter filter = new JwtAuthenticationProcessingFilter(mapper);
 
         java.lang.reflect.Method authMethod = JwtAuthenticationProcessingFilter.class.getDeclaredMethod(
@@ -81,7 +81,7 @@ class JwtAuthenticationProcessingFilterTest {
     @Test
     @DisplayName("Filter has expected default filterProcessesUrl")
     void testFilterProcessesUrl() {
-        com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+        tools.jackson.databind.ObjectMapper mapper = new tools.jackson.databind.ObjectMapper();
         JwtAuthenticationProcessingFilter filter = new JwtAuthenticationProcessingFilter(mapper);
         assertThat(filter).isNotNull();
         // The filter matches POST /login/jwt

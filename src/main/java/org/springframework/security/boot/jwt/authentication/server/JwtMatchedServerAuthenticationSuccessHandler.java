@@ -29,7 +29,7 @@ import org.springframework.security.boot.biz.exception.AuthResponseCode;
 import org.springframework.security.boot.biz.userdetails.JwtPayloadRepository;
 import org.springframework.security.boot.biz.userdetails.UserProfilePayload;
 import org.springframework.security.boot.jwt.authentication.JwtAuthenticationToken;
-import org.springframework.security.boot.utils.SubjectUtils;
+import org.springframework.security.boot.biz.utils.SubjectUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.server.WebFilterExchange;
 import reactor.core.publisher.Mono;

@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.AccountStatusUserDetailsChecker;
 import org.springframework.security.boot.biz.userdetails.JwtPayloadRepository;
+import org.springframework.security.boot.biz.userdetails.SecurityPrincipal;
 import org.springframework.security.boot.jwt.exception.AuthenticationJwtNotFoundException;
 import org.springframework.security.core.userdetails.UserDetailsChecker;
 
@@ -104,7 +105,8 @@ class JwtAuthorizationProviderTest {
         when(payload.isAccountNonExpired()).thenReturn(true);
         when(payload.isCredentialsNonExpired()).thenReturn(true);
         when(payload.isAccountNonLocked()).thenReturn(true);
-        when(payload.getRoles()).thenReturn(Collections.emptyList());
+        JwtPayload.RolePair role = new JwtPayload.RolePair("role-1", "admin", "Administrator");
+        when(payload.getRoles()).thenReturn(Collections.singletonList(role));
         when(payload.getPerms()).thenReturn(new HashSet<>(Collections.singletonList("user:read")));
         when(payload.getClaims()).thenReturn(new HashMap<>());
         when(payload.getUuid()).thenReturn("uuid-1");
@@ -127,6 +129,7 @@ class JwtAuthorizationProviderTest {
         JwtAuthorizationToken result = (JwtAuthorizationToken) provider.authenticate(token);
         assertThat(result).isNotNull();
         assertThat(result.isAuthenticated()).isTrue();
+        assertThat(((SecurityPrincipal) result.getPrincipal()).getRoles()).containsExactly(role);
     }
 
     @Test

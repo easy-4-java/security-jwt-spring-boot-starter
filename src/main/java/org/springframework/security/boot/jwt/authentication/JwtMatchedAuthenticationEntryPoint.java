@@ -21,7 +21,7 @@ import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.security.boot.biz.SpringSecurityBizMessageSource;
 import org.springframework.security.boot.biz.authentication.nested.MatchedAuthenticationEntryPoint;
 import org.springframework.security.boot.jwt.exception.*;
-import org.springframework.security.boot.utils.SubjectUtils;
+import org.springframework.security.boot.biz.utils.SubjectUtils;
 import org.springframework.security.core.AuthenticationException;
 
 /**

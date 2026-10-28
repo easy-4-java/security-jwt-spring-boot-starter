@@ -15,7 +15,7 @@ import org.springframework.security.boot.biz.exception.AuthResponse;
 import org.springframework.security.boot.biz.exception.AuthResponseCode;
 import org.springframework.security.boot.biz.userdetails.JwtPayloadRepository;
 import org.springframework.security.boot.biz.userdetails.UserProfilePayload;
-import org.springframework.security.boot.utils.SubjectUtils;
+import org.springframework.security.boot.biz.utils.SubjectUtils;
 import org.springframework.security.core.Authentication;
 
 import java.io.IOException;

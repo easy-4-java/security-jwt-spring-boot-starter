@@ -116,18 +116,6 @@ public class ReactiveSecurityJwtAutoConfiguration {
 	}
 	
 	/* @Bean
-	/**
-	 * spring Security Filter Chain.
-	 *
-	 * @param http the http
-	 * @param authenticationManager the authentication manager
-	 * @param securityContextRepository the security context repository
-	 * @param authenticationConverter the authentication converter
-	 * @param authenticationSuccessHandler the authentication success handler
-	 * @param authenticationFailureHandler the authentication failure handler
-	 * @param logoutHandler the logout handler
-	 * @return the result
-	 */
 	public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http,
 			ReactiveAuthenticationManager authenticationManager,
 			ServerSecurityContextRepository securityContextRepository,
