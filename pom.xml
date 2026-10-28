@@ -478,7 +478,9 @@
         <maven-resources-plugin.version>3.1.0</maven-resources-plugin.version>
         <maven-surefire-plugin.version>2.22.1</maven-surefire-plugin.version>
         <maven-nexus-staging-plugin.version>1.6.8</maven-nexus-staging-plugin.version>
+        <spring-security.version>5.8.14</spring-security.version>
         <spring-boot-starter-security-biz.version>2.3.x.20260630-SNAPSHOT</spring-boot-starter-security-biz.version>
+        <security-jwt-extension.version>1.0.x.20260630-SNAPSHOT</security-jwt-extension.version>
                 <javax.servlet-api.version>4.0.1</javax.servlet-api.version>
                 <slf4j.version>2.0.18</slf4j.version>
     </properties>
@@ -492,6 +494,11 @@
                 <groupId>io.github.easy4j</groupId>
                 <artifactId>security-biz-spring-boot-starter</artifactId>
                 <version>${spring-boot-starter-security-biz.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.easy4j</groupId>
+                <artifactId>security-jwt-extension</artifactId>
+                <version>${security-jwt-extension.version}</version>
             </dependency>
 
                 <dependency>
@@ -588,6 +595,10 @@
         <dependency>
             <groupId>io.github.easy4j</groupId>
             <artifactId>security-biz-spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.github.easy4j</groupId>
+            <artifactId>security-jwt-extension</artifactId>
         </dependency>
         <!-- For Spring WebFlux -->
         <!-- For Spring Webflux -->
