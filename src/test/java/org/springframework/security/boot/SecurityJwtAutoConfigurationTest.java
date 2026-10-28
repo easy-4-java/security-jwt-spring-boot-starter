@@ -18,6 +18,7 @@ package org.springframework.security.boot;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
+import org.springframework.security.boot.jwt.authentication.JwtMatchedAuthenticationEntryPoint;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -43,18 +44,16 @@ class SecurityJwtAutoConfigurationTest {
     }
 
     @Test
-    @DisplayName("Auto-configuration loads when 'security.jwt.enabled=true'")
-    void testLoadsWhenEnabledPropertySet() {
+    @DisplayName("Auto-configuration loads when imported")
+    void testLoadsWhenImported() {
         runner.withUserConfiguration(SecurityJwtAutoConfiguration.class)
-                .withPropertyValues("security.jwt.enabled=true")
                 .run(context -> assertThat(context).hasSingleBean(SecurityJwtAutoConfiguration.class));
     }
 
     @Test
-    @DisplayName("Auto-configuration is absent when explicitly disabled")
-    void testNotLoadedWhenDisabled() {
+    @DisplayName("Auto-configuration provides an entry point without a separate enable flag")
+    void testProvidesEntryPointWithoutEnableFlag() {
         runner.withUserConfiguration(SecurityJwtAutoConfiguration.class)
-                .withPropertyValues("security.jwt.enabled=false")
-                .run(context -> assertThat(context).doesNotHaveBean(SecurityJwtAutoConfiguration.class));
+                .run(context -> assertThat(context).hasSingleBean(JwtMatchedAuthenticationEntryPoint.class));
     }
 }

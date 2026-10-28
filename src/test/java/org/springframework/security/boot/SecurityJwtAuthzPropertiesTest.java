@@ -105,8 +105,10 @@ class SecurityJwtAuthzPropertiesTest {
     @DisplayName("Field 'ignorePatterns' can be set and read")
     void testIgnorePatternsField() {
         SecurityJwtAuthzProperties props = new SecurityJwtAuthzProperties();
-        props.setIgnorePatterns(new String[] {"/login/jwt", "/health"});
-        assertThat(props.getIgnorePatterns()).containsExactly("/login/jwt", "/health");
+        assertThat(props.getIgnorePatterns()).containsExactly("/login/jwt");
+
+        props.setIgnorePatterns(new String[]{"/public/**"});
+        assertThat(props.getIgnorePatterns()).containsExactly("/public/**");
     }
 
     @Test
