@@ -5,7 +5,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.boot.biz.authentication.PostRequestAuthenticationProcessingFilter;
-import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 /**
  * Jwt认证 (authentication)过滤器
@@ -14,7 +14,7 @@ import org.springframework.security.web.servlet.util.matcher.PathPatternRequestM
 public class JwtAuthenticationProcessingFilter extends PostRequestAuthenticationProcessingFilter {
 	
 	public JwtAuthenticationProcessingFilter(ObjectMapper objectMapper) {
-		super(objectMapper, PathPatternRequestMatcher.pathPattern(HttpMethod.POST, "/login/jwt"));
+		super(objectMapper, new AntPathRequestMatcher("/login/jwt", HttpMethod.POST.name()));
 	}
 	
 	@Override
